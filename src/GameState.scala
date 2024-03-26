@@ -1,0 +1,6 @@
+case class GameState() {
+
+
+
+
+}
