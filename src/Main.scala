@@ -1,19 +1,21 @@
-import Utils.{Board, fillOneCell, randomChar, setBoardWithWords, Coord2D}
+import Utils.{Board, Coord2D, completeBoardRandomly, fillOneCell, randomChar, setBoardWithWords}
 
 object Main {
-  
+
+  val r = MyRandom(11420)
   def main(args: Array[String]): Unit = {
     // Example of usage:
-    val board1: Board = List(
-      List('A', 'B', 'C'),
-      List('D', 'E', 'F'),
-      List('G', 'H', 'I')
+    val board: Board = List(
+      List('.', '.', '.'),
+      List('.', '.', '.'),
+      List('.', '.', '.')
     )
 
-    val updatedBoard1 = setBoardWithWords(board1, List("CAT"), List(List((0, 0), (1, 1), (0, 2))))
+    val updatedBoard = setBoardWithWords(board, List("CAT"), List(List((0, 0), (1, 1), (0, 2))))
 
-    updatedBoard1.foreach(row => println(row.mkString(" ")))
+    val (b, r1) = completeBoardRandomly(updatedBoard, r, _.nextChar)
 
+    b.foreach(row => println(row.mkString(" ")))
   }
 
 

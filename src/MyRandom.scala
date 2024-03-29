@@ -7,9 +7,8 @@ case class MyRandom(seed: Long) extends Random {
   def nextChar: (Char, MyRandom) = {
     val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
     val nextRandom = MyRandom(newSeed)
-    val randomInt = (newSeed >>> 16).toInt
-    val randomIntInRange = letterA + randomInt%(letterZ - letterA + 1)
-    (randomIntInRange.toChar, nextRandom)
+    val char = (newSeed % 26 + 65).toChar // Generates a random uppercase letter
+    (char, nextRandom)
   }
 
 }
