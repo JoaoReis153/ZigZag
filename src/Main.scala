@@ -1,4 +1,4 @@
-import Utils.{Board, Coord2D, completeBoardRandomly, fillOneCell, randomChar, setBoardWithWords}
+import Utils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, play, randomChar, setBoardWithWords}
 
 object Main {
 
@@ -11,9 +11,11 @@ object Main {
       List('.', '.', '.')
     )
 
-    val updatedBoard = setBoardWithWords(board, List("CAT"), List(List((0, 0), (1, 1), (0, 2))))
+    val updatedBoard = setBoardWithWords(board, List("CAT"), List(List((0, 0), (0, 1), (0, 2))))
 
     val (b, r1) = completeBoardRandomly(updatedBoard, r, _.nextChar)
+
+    println(play(b, "CAT", (0,0), Direction.East))
 
     b.foreach(row => println(row.mkString(" ")))
   }
