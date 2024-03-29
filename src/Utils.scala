@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 object Utils {
 
   type Board = List[List[Char]]
@@ -29,5 +31,21 @@ object Utils {
     fillBoard(board, coord._1)
   }
 
+  def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {
+    @tailrec
+    def fillWord(board: Board, word : String, positions: List[Coord2D], index: Int): Board = positions match {
+      case Nil => board
+      case head :: tail => fillWord(fillOneCell(board, word(index), head) , word, tail, index + 1)
+    }
+
+    @tailrec
+    def fillAllWords(board: Board, words: List[String], positions: List[List[Coord2D]], index: Int): Board = words match {
+      case Nil => board
+      case head :: tail => fillAllWords( fillWord(board, head, positions(index), 0) , tail, positions, index + 1)
+    }
+
+    fillAllWords(board, words, positions, 0)
+
+  }
 
 }
