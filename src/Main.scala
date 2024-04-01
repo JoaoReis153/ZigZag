@@ -2,7 +2,7 @@ import Utils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, pla
 
 object Main {
 
-  val r = MyRandom(11420)
+  val r = MyRandom(114320)
   def main(args: Array[String]): Unit = {
     // Example of usage:
     val board: Board = List(

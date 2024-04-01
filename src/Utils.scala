@@ -60,15 +60,16 @@ object Utils {
 
 
   def completeBoardRandomly(board:Board, r:MyRandom, f: MyRandom => (Char, MyRandom)):(Board, MyRandom) = {
-      def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = row match {
-        case Nil => (Nil, r)
-        case head :: tail if head == '.' =>
-          val (newRow, newR) = completeBoardFillRow(tail, r)
-          val (char, r1) = f(newR)
-          (char :: newRow, r1)
-        case head :: tail =>
-          val (newRow, newR) = completeBoardFillRow(tail, r)
-          (head :: newRow, newR)
+      def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
+        row.foldLeft((List[Char](), r)) {
+          case ((acc, currR), x) =>
+            if (x == '.') {
+              val (newChar, newR) = f(currR)
+              (acc :+ newChar, newR)
+            } else {
+              (acc :+ x, currR)
+            }
+        }
       }
 
       def completeBoardAux(board: Board, r: MyRandom): (Board, MyRandom) = board match {
