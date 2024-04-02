@@ -1,6 +1,7 @@
 import scala.annotation.tailrec
+import scala.io.StdIn.readLine
 
-object Utils {
+object ZigZagUtils {
 
   type Board = List[List[Char]]
   type Coord2D = (Int, Int) //(row, column)
@@ -26,6 +27,7 @@ object Utils {
   }
 
   def fillOneCell(board: Board, letter: Char, coord: Coord2D): Board = {
+
     def fillRow(row: List[Char], columnIndex: Int): List[Char] = row match {
       case Nil => Nil
       case _ :: tail if columnIndex == 0 => letter :: tail
@@ -55,19 +57,20 @@ object Utils {
     }
 
     fillAllWords(board, words, positions, 0)
-
   }
 
 
   def completeBoardRandomly(board:Board, r:MyRandom, f: MyRandom => (Char, MyRandom)):(Board, MyRandom) = {
+
       def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
         row.foldLeft((List[Char](), r)) {
-          case ((acc, currR), x) =>
+          //case (accumulator, currentElement)
+          case ((accRow, accR), x) =>
             if (x == '.') {
-              val (newChar, newR) = f(currR)
-              (acc :+ newChar, newR)
+              val (newChar, newR) = f(accR)
+              (accRow :+ newChar, newR)
             } else {
-              (acc :+ x, currR)
+              (accRow :+ x, accR)
             }
         }
       }
@@ -98,5 +101,14 @@ object Utils {
 
   }
 
+  def showPrompt(): Unit = {
+    print("\nGuess a word: ")
+  }
+
+  def getUserInput(): String = readLine.trim.toUpperCase
+
+  def printGameOver(): Unit = println("\n=== GAME OVER ===")
+
+  def printNewGame(): Unit = println("\n=== NEW GAME ===")
 
 }

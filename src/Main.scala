@@ -1,4 +1,4 @@
-import Utils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, play, randomChar, setBoardWithWords}
+import ZigZagUtils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, play, randomChar, setBoardWithWords}
 
 object Main {
 
