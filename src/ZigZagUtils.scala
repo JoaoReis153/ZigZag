@@ -22,6 +22,9 @@ object ZigZagUtils {
     case Direction.SouthWest => (coord._1 + 1, coord._2 - 1)
   }
 
+  def stringToDirection(input: String): Option[Direction.Value] = {
+    Direction.values.find(_.toString.equalsIgnoreCase(input))
+  }
   def randomChar(rand: MyRandom) : (Char, MyRandom) = {
     rand.nextChar
   }
@@ -105,10 +108,43 @@ object ZigZagUtils {
     print("\nGuess a word: ")
   }
 
-  def getUserInput(): String = readLine.trim.toUpperCase
+
+  def printGameState(gameState: GameState): Unit = {
+    println(s"\nNumber of Tries: ${gameState.numTries}")
+    println(s"Number of found words: ${gameState.numFound}")
+
+    @tailrec
+    def printBoard(board: Board): Unit = board match {
+      case Nil => // Base case: no more rows to print
+      case head :: tail => // Recursive case: print the current row and proceed to the next
+        println(head.mkString(" "))
+        printBoard(tail) // Recursively print the rest of the board
+    }
+
+    printBoard(gameState.board)
+  }
+
+  def printGameStateList(lst : List[GameState]): String = {
+    lst match {
+      case Nil => ("")
+      case head::tail => printGameState(head) + printGameStateList(tail)
+    }
+  }
+  def getUserInput: String = readLine.trim.toUpperCase
 
   def printGameOver(): Unit = println("\n=== GAME OVER ===")
 
   def printNewGame(): Unit = println("\n=== NEW GAME ===")
 
+  def printRules(): Unit = {
+    println("\n-----------------------------------------")
+    println("Welcome to ZigZag!")
+    println("The rules are simple, find the hidden words.")
+    println("(to play a new game press N)")
+    println("(to quit press Q)")
+    println("(to check the match history press H)")
+    println("(to check the rules once again press R :)")
+    println("Good luck, have fun!")
+    println("-----------------------------------------")
+  }
 }
