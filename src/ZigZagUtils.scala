@@ -1,5 +1,7 @@
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
+import scala.io.Source
+import scala.util.matching.Regex
 
 object ZigZagUtils {
 
@@ -44,6 +46,52 @@ object ZigZagUtils {
     }
 
     fillBoard(board, coord._1)
+  }
+
+
+
+  def readFromFile(file: String): (List[String], List[List[(Int, Int)]]) = {
+    val bufferedSource = Source.fromFile(file)
+    try {
+      val content = bufferedSource.getLines().mkString("\n")
+      val blocks = content.split("\n\n").toList // Split by empty line to get blocks of word and coords
+
+      val wordPattern: Regex = "^[a-zA-Z]+$".r
+      val coordPattern: Regex = "\\(([0-9]+),([0-9]+)\\)".r
+
+      // Process each block to extract the word and its coordinates
+      val processedBlocks = blocks.map { block =>
+        val lines = block.split("\n").toList
+
+        val word = lines.headOption.getOrElse("") // First line of each block should be the word
+        val coords = lines.tail.flatMap {
+          case coordPattern(col, row) => Some((row.toInt, col.toInt))
+          case _ => None
+        }
+
+        (word, coords)
+      }
+
+      // Separate the words and coordinates into their respective lists
+      processedBlocks.foldLeft((List.empty[String], List.empty[List[(Int, Int)]])) {
+        case ((wordsAcc, coordsAcc), (word, coords)) =>
+          (wordsAcc :+ word.toUpperCase, coordsAcc :+ coords)
+      }
+    } finally {
+      bufferedSource.close()
+    }
+  }
+/*
+  def initializeGameBoardFromFile(board: Board, filePath: String, positions: List[List[Coord2D]]): Board = {
+    val words = readFromFile(filePath)
+    setBoardWithWords(board, words, positions)
+  }
+*/
+
+  def initializeGameBoardWithWordsFromFile(board: Board): Board = {
+    val file: String = "src/givenWords.txt"
+    val (words, positions) = readFromFile(file)
+    setBoardWithWords(board, words, positions)
   }
 
   def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {

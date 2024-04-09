@@ -1,4 +1,6 @@
-import ZigZagUtils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, play, randomChar, setBoardWithWords}
+import ZigZagUtils.{Board, Coord2D, Direction, completeBoardRandomly, fillOneCell, initializeGameBoardWithWordsFromFile, play, randomChar, readFromFile, setBoardWithWords}
+
+import java.io.File
 
 object Main {
 
@@ -11,11 +13,11 @@ object Main {
       List('.', '.', '.')
     )
 
-    val updatedBoard = setBoardWithWords(board, List("CAT"), List(List((0, 0), (0, 1), (0, 2))))
+
+
+    val updatedBoard = initializeGameBoardWithWordsFromFile(board)
 
     val (b, r1) = completeBoardRandomly(updatedBoard, r, _.nextChar)
-
-    println(play(b, "CAT", (0,0), Direction.East))
 
     b.foreach(row => println(row.mkString(" ")))
   }
