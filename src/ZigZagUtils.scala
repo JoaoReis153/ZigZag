@@ -47,6 +47,7 @@ object ZigZagUtils {
   }
 
   def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {
+
     @tailrec
     def fillWord(board: Board, word : String, positions: List[Coord2D], index: Int): Board = positions match {
       case Nil => board

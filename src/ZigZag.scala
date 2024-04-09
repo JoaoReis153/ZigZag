@@ -11,10 +11,6 @@ object ZigZag extends App {
   // Assuming a function to initialize a board to a specific state
   private val initialBoard: Board = List.fill(5)(List.fill(5)('.'))
   private val initialRandom: MyRandom = MyRandom(10)
-// private var numFound: Int = 0
-// private var numTries: Int = 0
-
-
 
   // Assuming completeBoardRandomly returns a filled board and updated random state
   private val (filledBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
