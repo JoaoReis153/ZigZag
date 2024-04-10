@@ -19,10 +19,10 @@ object ZigZag extends App {
   private val initialState = GameState(0, 0, filledBoard)
 
   printRules()
-  mainLoop(initialState, updatedRandom, List())
+  mainLoop(initialState, updatedRandom)
 
   @tailrec
-  private def mainLoop(gameState: GameState, random: MyRandom, hist: List[GameState]): Unit = {
+  private def mainLoop(gameState: GameState, random: MyRandom): Unit = {
     printGameState(gameState)
     showPrompt()
     val userInput = getUserInput.toUpperCase
@@ -31,19 +31,18 @@ object ZigZag extends App {
       case "Q" =>
         printGameOver()
         printGameState(gameState)
-        println("History: ")
-        printGameStateList(hist)
 
       case "N" =>
         printGameOver()
-        val (newBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
+        var (newBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
+        newBoard = initializeGameBoardWithWordsFromFile(newBoard)
         printNewGame()
-        mainLoop(GameState(0, 0, newBoard), newRandom, hist :+ gameState)
+        mainLoop(GameState(0, 0, newBoard), newRandom)
 
 
       case "R" =>
         printRules()
-        mainLoop(gameState, random, hist)
+        mainLoop(gameState, random)
 
       case _ =>
         var found: Int = gameState.numFound
@@ -70,7 +69,7 @@ object ZigZag extends App {
           case _: NumberFormatException => println("Invalid coordinates")
         }
         val newGameState = gameState.copy(tries, found)
-        mainLoop(newGameState, random, hist)
+        mainLoop(newGameState, random)
     }
   }
 
