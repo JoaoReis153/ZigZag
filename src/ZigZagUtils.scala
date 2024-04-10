@@ -117,23 +117,20 @@ object ZigZagUtils {
       def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
         row.foldLeft((List[Char](), r)) {
           //case (accumulator, currentElement)
-          case ((accRow, accR), x) =>
-            if (x == '.') {
-              val (newChar, newR) = f(accR)
-              (accRow :+ newChar, newR)
-            } else {
-              (accRow :+ x, accR)
-            }
+          case ((accRow, accR), _) =>
+            val (newChar, newR) = f(accR)
+            (accRow :+ newChar, newR)
         }
       }
 
       def completeBoardAux(board: Board, r: MyRandom): (Board, MyRandom) = board match {
-        case Nil => (Nil, r)
+        case Nil => (Nil,  MyRandom(System.currentTimeMillis()))
         case head :: tail =>
           val (newHead, r1) = completeBoardFillRow(head, r)
           val (newTail, r2) = completeBoardAux(tail, r1)
           (newHead :: newTail, r2)
       }
+
       completeBoardAux(board, r)
   }
 
