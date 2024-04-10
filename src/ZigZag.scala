@@ -34,7 +34,7 @@ object ZigZag extends App {
 
       case "N" =>
         printGameOver()
-        var (newBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
+        var (newBoard, newRandom) = completeBoardRandomly(initialBoard, MyRandom(currentTime), randomChar)
         newBoard = initializeGameBoardWithWordsFromFile(newBoard)
         printNewGame()
         mainLoop(GameState(0, 0, newBoard), newRandom)
