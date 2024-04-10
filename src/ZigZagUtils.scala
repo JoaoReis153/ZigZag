@@ -85,7 +85,7 @@ object ZigZagUtils {
     // Preenche uma linha do tabuleiro com caracteres aleatorios
     def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
       row.foldLeft((List[Char](), r)) {
-        //case (accumulator, currentElement)
+        //case (acumulador, elementoAtual)
         case ((accRow, accR), _) =>
           val (newChar, newR) = f(accR)
           (accRow :+ newChar, newR)
@@ -217,7 +217,7 @@ object ZigZagUtils {
 
   def printGameStateList(lst: List[GameState]): String = {
     lst match {
-      case Nil => ("")
+      case Nil => ""
       case head :: tail => printGameState(head) + printGameStateList(tail)
     }
   }
