@@ -15,7 +15,6 @@ object ZigZag extends App {
   private val initialRandom: MyRandom = MyRandom(10)
   //private val initialRandom: MyRandom = MyRandom(currentTime)
 
-
   private var (filledBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
   filledBoard = initializeGameBoardWithWordsFromFile(filledBoard)
   
