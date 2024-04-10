@@ -1,8 +1,7 @@
 
-import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt, stringToDirection}
+import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printRules, randomChar, showPrompt}
 
 import scala.annotation.tailrec
-import scala.util.Random
 
 case class GameState(numTries: Int, numFound: Int, board: Board)
 
@@ -12,8 +11,7 @@ object ZigZag extends App {
 
   private val currentTime = System.currentTimeMillis()
 
-  private val initialRandom: MyRandom = MyRandom(10)
-  //private val initialRandom: MyRandom = MyRandom(currentTime)
+  private val initialRandom: MyRandom = MyRandom(currentTime)
 
   private var (filledBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
   filledBoard = initializeGameBoardWithWordsFromFile(filledBoard)
@@ -24,7 +22,7 @@ object ZigZag extends App {
   mainLoop(initialState, updatedRandom, List())
 
   @tailrec
-  def mainLoop(gameState: GameState, random: MyRandom, hist: List[GameState]): Unit = {
+  private def mainLoop(gameState: GameState, random: MyRandom, hist: List[GameState]): Unit = {
     printGameState(gameState)
     showPrompt()
     val userInput = getUserInput.toUpperCase
@@ -53,14 +51,14 @@ object ZigZag extends App {
           val x = getUserInput.toInt
           print("y: ")
           val y = getUserInput.toInt
-          print("\ndirection: ")
+          print("\nDirection: (north,  northeast, east, southeast, south, southwest, west, northwest\n")
           val directionStr = getUserInput.toUpperCase
-          stringToDirection(directionStr) match {
+          Direction.stringToDirection(directionStr) match {
             case Some(direction) =>
               tries = tries + 1
               if (play(gameState.board, userInput, (y, x), direction)) {
                 found = found + 1
-                println("Correct!")
+                println("----> Correct! <----")
               } else {
                 println("Try again!")
               }

@@ -6,54 +6,37 @@ import scala.util.matching.Regex
 object ZigZagUtils {
 
   type Board = List[List[Char]]
-  private type Coord2D = (Int, Int) //(row, column)
+  private type Coord2D = (Int, Int) //(linha, coluna)
 
   object Direction extends Enumeration {
     type Direction = Value
-    val North, South, East, West, NorthEast, NorthWest, SouthEast, SouthWest = Value
+    private val North, South, East, West, NorthEast, NorthWest, SouthEast, SouthWest = Value
 
     def nextCoord(coord: Coord2D, direction: Direction.Value): Coord2D = direction match {
       case Direction.North => (coord._1 - 1, coord._2)
-      case Direction.South => (coord._1 + 1, coord._2)
-      case Direction.East => (coord._1, coord._2 + 1)
-      case Direction.West => (coord._1, coord._2 - 1)
       case Direction.NorthEast => (coord._1 - 1, coord._2 + 1)
-      case Direction.NorthWest => (coord._1 - 1, coord._2 - 1)
+      case Direction.East => (coord._1, coord._2 + 1)
       case Direction.SouthEast => (coord._1 + 1, coord._2 + 1)
+      case Direction.South => (coord._1 + 1, coord._2)
       case Direction.SouthWest => (coord._1 + 1, coord._2 - 1)
+      case Direction.West => (coord._1, coord._2 - 1)
+      case Direction.NorthWest => (coord._1 - 1, coord._2 - 1)
+    }
+
+
+    def stringToDirection(input: String): Option[Direction.Value] = {
+      Direction.values.find(_.toString.equalsIgnoreCase(input))
     }
   }
 
 
-  def stringToDirection(input: String): Option[Direction.Value] = {
-    Direction.values.find(_.toString.equalsIgnoreCase(input))
-  }
-  def randomChar(rand: MyRandom) : (Char, MyRandom) = {
+
+
+
+
+  def randomChar(rand: MyRandom): (Char, MyRandom) = {
     rand.nextChar
   }
-
-  def completeBoardRandomly(board:Board, r:MyRandom, f: MyRandom => (Char, MyRandom)):(Board, MyRandom) = {
-
-    def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
-      row.foldLeft((List[Char](), r)) {
-        //case (accumulator, currentElement)
-        case ((accRow, accR), _) =>
-          val (newChar, newR) = f(accR)
-          (accRow :+ newChar, newR)
-      }
-    }
-
-    def completeBoardAux(board: Board, r: MyRandom): (Board, MyRandom) = board match {
-      case Nil => (Nil,  MyRandom(System.currentTimeMillis()))
-      case head :: tail =>
-        val (newHead, r1) = completeBoardFillRow(head, r)
-        val (newTail, r2) = completeBoardAux(tail, r1)
-        (newHead :: newTail, r2)
-    }
-
-    completeBoardAux(board, r)
-  }
-
 
   private def fillOneCell(board: Board, letter: Char, coord: Coord2D): Board = {
 
@@ -72,74 +55,58 @@ object ZigZagUtils {
     fillBoard(board, coord._1)
   }
 
-  private def readFromFile(file: String): (List[String], List[List[(Int, Int)]]) = {
-    val bufferedSource = Source.fromFile(file)
-    try {
-      val content = bufferedSource.getLines().mkString("\n")
-      val blocks = content.split("\n\n").toList // Split by empty line to get blocks of word and coords
-
-      val wordPattern: Regex = "^[a-zA-Z]+$".r
-      val coordPattern: Regex = "\\(([0-9]+),([0-9]+)\\)".r
-
-      // Process each block to extract the word and its coordinates
-      val processedBlocks = blocks.map { block =>
-        val lines = block.split("\n").toList
-
-        val word = lines.headOption.getOrElse("") // First line of each block should be the word
-        val coords = lines.tail.flatMap {
-          case coordPattern(col, row) => Some((row.toInt, col.toInt))
-          case _ => None
-        }
-
-        (word, coords)
-      }
-
-      // Separate the words and coordinates into their respective lists
-      processedBlocks.foldLeft((List.empty[String], List.empty[List[(Int, Int)]])) {
-        case ((wordsAcc, coordsAcc), (word, coords)) =>
-          (wordsAcc :+ word.toUpperCase, coordsAcc :+ coords)
-      }
-    } finally {
-      bufferedSource.close()
-    }
-  }
-
-  def initializeGameBoardWithWordsFromFile(board: Board): Board = {
-    val file: String = "src/givenWords.txt"
-    val (words, positions) = readFromFile(file)
-    setBoardWithWords(board, words, positions)
-  }
 
   private def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {
 
     @tailrec
-    def fillWord(board: Board, word : String, positions: List[Coord2D], index: Int): Board = positions match {
+    def fillWord(board: Board, word: String, positions: List[Coord2D], index: Int): Board = positions match {
       case Nil => board
-      case head :: tail => fillWord(fillOneCell(board, word(index), head) , word, tail, index + 1)
+      case head :: tail => fillWord(fillOneCell(board, word(index), head), word, tail, index + 1)
     }
 
     @tailrec
     def fillAllWords(board: Board, words: List[String], positions: List[List[Coord2D]], index: Int): Board = words match {
       case Nil => board
-      case head :: tail => fillAllWords( fillWord(board, head, positions(index), 0) , tail, positions, index + 1)
+      case head :: tail => fillAllWords(fillWord(board, head, positions(index), 0), tail, positions, index + 1)
     }
 
     fillAllWords(board, words, positions, 0)
   }
 
 
+  def completeBoardRandomly(board: Board, r: MyRandom, f: MyRandom => (Char, MyRandom)): (Board, MyRandom) = {
+
+    def completeBoardFillRow(row: List[Char], r: MyRandom): (List[Char], MyRandom) = {
+      row.foldLeft((List[Char](), r)) {
+        //case (accumulator, currentElement)
+        case ((accRow, accR), _) =>
+          val (newChar, newR) = f(accR)
+          (accRow :+ newChar, newR)
+      }
+    }
+
+    def completeBoardAux(board: Board, r: MyRandom): (Board, MyRandom) = board match {
+      case Nil => (Nil, MyRandom(System.currentTimeMillis()))
+      case head :: tail =>
+        val (newHead, r1) = completeBoardFillRow(head, r)
+        val (newTail, r2) = completeBoardAux(tail, r1)
+        (newHead :: newTail, r2)
+    }
+
+    completeBoardAux(board, r)
+  }
+
+
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
     val file: String = "src/givenWords.txt"
     val (words, positions) = readFromFile(file)
-
     @tailrec
     def searchForTheGivenWordInTheList(wordsList: List[String], coordsList: List[List[Coord2D]], coordAnswer: Coord2D, wordAnswer: String, direction: Direction.Value): Boolean = wordsList match {
-
       case Nil =>
         false
-      case x::xs =>
-        if(x == wordAnswer && coordsList.head.head == coordAnswer && Direction.nextCoord(coordAnswer, direction) == coordsList.head.tail.head) {
-            checkWordIsInBoard(board, wordAnswer, coordsList.head)
+      case x :: xs =>
+        if (x == wordAnswer && coordsList.head.head == coordAnswer && Direction.nextCoord(coordAnswer, direction) == coordsList.head.tail.head) {
+          checkWordIsInBoard(board, wordAnswer, coordsList.head)
         } else {
           searchForTheGivenWordInTheList(xs, coordsList.tail, coordAnswer, wordAnswer, direction)
         }
@@ -157,8 +124,56 @@ object ZigZagUtils {
     }
 
     searchForTheGivenWordInTheList(words, positions, start, word, direction)
+  }
 
 
+  private def readFromFile(file: String): (List[String], List[List[Coord2D]]) = {
+    val bufferedSource = Source.fromFile(file)
+    val content: List[String] = bufferedSource.getLines.mkString("\n").split("\n").toList
+    bufferedSource.close()
+
+    val coordPattern: Regex = "\\(([0-9]+),([0-9]+)\\)".r
+    val wordPattern: Regex = "^[a-zA-Z]+$".r
+
+    @tailrec
+    def getFormatFromList( content: List[String], words: List[String], coordinates: List[List[Coord2D]], currentCoords: List[Coord2D]): (List[String], List[List[Coord2D]]) = content match {
+      case Nil =>
+        // If there are leftover coordinates, add them to the list; otherwise, just return what we have
+        if (currentCoords.nonEmpty) (words, coordinates :+ currentCoords) else (words, coordinates)
+      case x :: xs => x match {
+        case "" =>
+          // Empty string, indicating end of current word's coordinates
+          getFormatFromList(xs, words, coordinates :+ currentCoords, List.empty)
+        case coordPattern(y, x) =>
+          // Coordinate line
+          val newCoord = (x.toInt, y.toInt)
+          getFormatFromList(xs, words, coordinates, currentCoords :+ newCoord)
+        case _ if wordPattern.matches(x) =>
+          var word = x.toUpperCase
+          // Word line
+          if (currentCoords.isEmpty) {
+            // No current coordinates, just add the word
+            getFormatFromList(xs, words :+ word, coordinates, currentCoords)
+          } else {
+            // There are some coordinates, finalize them and start fresh for the new word
+            getFormatFromList(xs, words :+ word, coordinates :+ currentCoords, List.empty)
+          }
+        case _ =>
+          // Ignore any line that doesn't match expected patterns (could log or handle errors here)
+          getFormatFromList(xs, words, coordinates, currentCoords)
+      }
+    }
+    // Start the recursive processing
+    getFormatFromList(content, List(), List(), List())
+
+  }
+
+
+  def initializeGameBoardWithWordsFromFile(board: Board): Board = {
+    val file: String = "src/givenWords.txt"
+    val (words, positions) = readFromFile(file)
+
+    setBoardWithWords(board, words, positions)
   }
 
   def showPrompt(): Unit = {
@@ -181,17 +196,23 @@ object ZigZagUtils {
     printBoard(gameState.board)
   }
 
-  def printGameStateList(lst : List[GameState]): String = {
+
+  def printGameStateList(lst: List[GameState]): String = {
     lst match {
       case Nil => ("")
-      case head::tail => printGameState(head) + printGameStateList(tail)
+      case head :: tail => printGameState(head) + printGameStateList(tail)
     }
   }
+
+
   def getUserInput: String = readLine.trim.toUpperCase
+
 
   def printGameOver(): Unit = println("\n=== GAME OVER ===")
 
+
   def printNewGame(): Unit = ("\n=== NEW GAME ===")
+
 
   def printRules(): Unit = {
     println("\n-----------------------------------------")
