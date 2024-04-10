@@ -217,7 +217,7 @@ object ZigZagUtils {
 
   def printGameStateList(lst: List[GameState]): String = {
     lst match {
-      case Nil => ("")
+      case Nil => ""
       case head :: tail => printGameState(head) + printGameStateList(tail)
     }
   }
