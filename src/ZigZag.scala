@@ -1,5 +1,5 @@
 
-import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printRules, randomChar, showPrompt}
+import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt}
 
 import scala.annotation.tailrec
 
@@ -37,7 +37,9 @@ object ZigZag extends App {
       case "N" =>
         printGameOver()
         val (newBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
+        printNewGame()
         mainLoop(GameState(0, 0, newBoard), newRandom, hist :+ gameState)
+
 
       case "R" =>
         printRules()
