@@ -1,5 +1,5 @@
 
-import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt}
+import ZigZagUtils._
 
 import scala.annotation.tailrec
 

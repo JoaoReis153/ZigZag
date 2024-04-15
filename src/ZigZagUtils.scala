@@ -117,6 +117,11 @@ object ZigZagUtils {
     def searchForTheGivenWordInTheList(wordsList: List[String], coordsList: List[List[Coord2D]], coordAnswer: Coord2D, wordAnswer: String, direction: Direction.Value): Boolean = wordsList match {
       case Nil => false
       case x :: xs =>
+        //Verificar se:
+        // -> a palavra no topo da lista corresponde à resposta dada
+        // -> a primeira coordenada corresponde à primeira coordenada dessa palavra no ficheiro
+        // -> a segunda coordenada no ficheiro corresponde à coordenada dada mais a direção dada
+
         if (x == wordAnswer && coordsList.head.head == coordAnswer && Direction.nextCoord(coordAnswer, direction) == coordsList.head.tail.head) {
           checkWordIsInBoard(board, wordAnswer, coordsList.head)
         } else {
