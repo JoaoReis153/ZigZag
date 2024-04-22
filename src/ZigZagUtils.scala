@@ -106,10 +106,9 @@ object ZigZagUtils {
 
 // Joga a palavra, na posição inicial, segundo a direção dada
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
-    val file: String = "src/givenWords.txt"
 
     // Extrai todas as palavras e respetivas posições do ficheiro
-    val (words, positions) = readFromFile(file)
+    val (words, positions) = readWordsAndCoordinatesFromFile()
 
     // Procura a palavra jogada nas palavras extraidas do ficheiro
     // Quando encontrar chama a função "checkWordIsInBoard"
@@ -144,10 +143,22 @@ object ZigZagUtils {
     searchForTheGivenWordInTheList(words, positions, start, word, direction)
   }
 
+  def getSeedFromFile(): Int = {
+    val filePath = "src/seed.txt"
+    val bufferedSource = Source.fromFile(filePath)
+    try {
+      val line = bufferedSource.getLines().next()
+      line.toInt
+    } finally {
+      bufferedSource.close()
+    }
+  }
+
+
 
   // Extrai as palavras e respetivas coordenadas do ficheiro
-  private def readFromFile(file: String): (List[String], List[List[Coord2D]]) = {
-    val bufferedSource = Source.fromFile(file)
+  private def readWordsAndCoordinatesFromFile(): (List[String], List[List[Coord2D]]) = {
+    val bufferedSource = Source.fromFile("src/givenWords.txt")
 
     //Extrai o conteudo
     val content: List[String] = bufferedSource.getLines.mkString("\n").split("\n").toList
@@ -189,7 +200,7 @@ object ZigZagUtils {
   // Inicializa o tabuleiro com as palavras do ficheiro
   def initializeGameBoardWithWordsFromFile(board: Board): Board = {
     val file: String = "src/givenWords.txt"
-    val (words, positions) = readFromFile(file)
+    val (words, positions) = readWordsAndCoordinatesFromFile()
 
     setBoardWithWords(board, words, positions)
   }
