@@ -58,6 +58,10 @@ object ZigZagUtils {
     fillBoard(board, coord._1)
   }
 
+  private def getOneCell(board: Board, coord: Coord2D): Char = {
+    board(coord._1)(coord._2)
+  }
+
 
   // Preenche o tabuleiro com as palavras nas posições dadas
   private def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {
@@ -104,8 +108,65 @@ object ZigZagUtils {
     completeBoard(board, r)
   }
 
-// Joga a palavra, na posição inicial, segundo a direção dada
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
+
+/*
+    def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
+      println("word: " + word)
+      //println(word.isEmpty)
+      //println(word.isBlank)
+      //println("-")
+      if(word.isEmpty) return true
+      if(visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
+        false
+      } else {
+        //println("ola : " + start)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.North), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthEast), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.East), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthEast), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.South), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthWest), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.West), start::visitedCoordinates)
+        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthWest), start::visitedCoordinates)
+      }
+    }
+*/
+    def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
+      println("word: " + word)
+      if (word.isEmpty) {
+        println("Word found!")
+        return true
+      }
+      if (visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
+        false
+      } else {
+        val newVisited = start :: visitedCoordinates
+        val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
+          Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
+
+        // Check each direction and return true if any direction results in a complete word search
+        directions.exists { dir =>
+          val nextCoord = Direction.nextCoord(start, dir)
+          searchCloseCoordinates(board, word.tail, nextCoord, newVisited)
+        }
+      }
+    }
+
+
+    val newCoord = Direction.nextCoord(start, direction)
+    if(getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
+      searchCloseCoordinates(board, word.tail, newCoord, List())
+    } else {
+      false
+    }
+  }
+
+
+
+// Joga a palavra, na posição inicial, segundo a direção dada
+  def play2(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
+    val file: String = "src/givenWords.txt"
 
     // Extrai todas as palavras e respetivas posições do ficheiro
     val (words, positions) = readWordsAndCoordinatesFromFile()
