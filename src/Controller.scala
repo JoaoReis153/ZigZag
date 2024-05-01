@@ -1,6 +1,7 @@
+
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
-import javafx.scene.control.{Button, ChoiceBox, Label, TableView, TextField}
+import javafx.scene.control.{Button, ChoiceBox, Label, TableColumn, TableRow, TableView, TextField}
 
 
 class Controller {
@@ -58,16 +59,25 @@ class Controller {
   @FXML
   def OnbtnSearchClick(): Unit = {
     // Lógica para o evento de clique do botão de pesquisa
+
+    val row = txtCoordRow.getText.toInt
+    val column = txtCoordColumn.getText.toInt
+    val word = txtWord.getText
+    val direction = cboxDirection.getValue
+
+
   }
 
   @FXML
   def OnbtnNewGameClick(): Unit = {
     // Lógica para o evento de clique do botão de novo jogo
+
   }
 
   @FXML
   def OnbtnQuitClick(): Unit = {
     // Lógica para o evento de clique do botão de sair
+
   }
 
 
