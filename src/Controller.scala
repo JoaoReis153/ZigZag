@@ -10,6 +10,11 @@ class Controller {
   @FXML
   private var cboxDirection: ChoiceBox[String] = _
 
+  //Valores do histórico:
+  @FXML
+  private var numberGame: TextField = _
+  private var numberTries: TextField = _
+  private var numberFound: TextField = _
 
   //Letras do ZigZag :
   @FXML private var lbl00: Label = _
@@ -55,28 +60,48 @@ class Controller {
   @FXML
   private var btnQuit: Button = _
 
+
+  // Função auxiliar para incrementar um contador
+  def incrementTextField(textField: TextField): Unit = {
+    val currentValue = textField.getText.toInt
+    val newValue = currentValue + 1
+    textField.setText(newValue.toString)
+  }
+
   // Métodos de evento para os botões
+
+  // Evento de clique do botão de pesquisa
   @FXML
   def OnbtnSearchClick(): Unit = {
-    // Lógica para o evento de clique do botão de pesquisa
-
-    val row = txtCoordRow.getText.toInt
-    val column = txtCoordColumn.getText.toInt
-    val word = txtWord.getText
-    val direction = cboxDirection.getValue
-
-
+    try {
+      val x = txtCoordRow.getText.toInt
+      val y = txtCoordColumn.getText.toInt
+      val directionStr = cboxDirection.getValue.toUpperCase
+      Direction.stringToDirection(directionStr) match {
+        case Some(direction) =>
+          if (play(initialState.board, txtWord.getText.toUpperCase, (y, x), direction)) {
+            incrementTextField(numberFound)
+          } else {
+            println("Tenta outra vez!")
+          }
+          incrementTextField(numberTries)
+        case None => println("Direção inválida")
+      }
+    } catch {
+      case _: NumberFormatException => println("Input inválido")
+    }
   }
 
   @FXML
   def OnbtnNewGameClick(): Unit = {
-    // Lógica para o evento de clique do botão de novo jogo
+    initialize()
 
   }
 
   @FXML
   def OnbtnQuitClick(): Unit = {
-    // Lógica para o evento de clique do botão de sair
+    val stage: Stage = numberGame.getScene.getWindow.asInstanceOf[Stage]
+    stage.close()
 
   }
 
@@ -84,7 +109,11 @@ class Controller {
 
 
   def initialize(): Unit = {
-    // Define as opções da ChoiceBox
+    // Define as condições de inicio
+    numberGame.setText("1")
+    numberTries.setText("0")
+    numberFound.setText("0")
     cboxDirection.setItems(FXCollections.observableArrayList("North", "South", "East", "West", "NorthWest", "SouthWest", "Northeast", "Southeast"))
+    
   }
 }

@@ -136,7 +136,7 @@
             <children>
                 <TableView fx:id="tableHistorico" layoutX="24.0" layoutY="19.0" prefHeight="352.0" prefWidth="200.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px;">
                     <columns>
-                        <TableColumn fx:id="columnGame" prefWidth="64.0" style="backgrou: orange;" text="Game" />
+                        <TableColumn fx:id="columnGame" prefWidth="64.0"  text="Game" />
                         <TableColumn fx:id="columnTries" prefWidth="71.0" text="Tries" />
                         <TableColumn fx:id="columnFound" prefWidth="71.0" text="Found" />
                     </columns>
