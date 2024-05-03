@@ -6,10 +6,7 @@ import javafx.scene.control.{Button, ChoiceBox, Label, TableColumn, TableRow, Ta
 
 class Controller {
 
-  //ChoiceBox da Direction:
-  @FXML
-  private var cboxDirection: ChoiceBox[String] = _
-
+  
   //Valores do histórico:
   @FXML
   private var numberGame: TextField = _
@@ -44,10 +41,7 @@ class Controller {
   @FXML private var lbl44: Label = _
 
   //Textfields :
-  @FXML
-  private var txtCoordRow: TextField = _
-  @FXML
-  private var txtCoordColumn: TextField = _
+
   @FXML
   private var txtWord: TextField = _
 
@@ -73,23 +67,23 @@ class Controller {
   // Evento de clique do botão de pesquisa
   @FXML
   def OnbtnSearchClick(): Unit = {
-    try {
-      val x = txtCoordRow.getText.toInt
-      val y = txtCoordColumn.getText.toInt
-      val directionStr = cboxDirection.getValue.toUpperCase
-      Direction.stringToDirection(directionStr) match {
-        case Some(direction) =>
-          if (play(initialState.board, txtWord.getText.toUpperCase, (y, x), direction)) {
-            incrementTextField(numberFound)
-          } else {
-            println("Tenta outra vez!")
-          }
-          incrementTextField(numberTries)
-        case None => println("Direção inválida")
-      }
-    } catch {
-      case _: NumberFormatException => println("Input inválido")
-    }
+//    try {
+//      val x = txtCoordRow.getText.toInt
+//      val y = txtCoordColumn.getText.toInt
+//      val directionStr = cboxDirection.getValue.toUpperCase
+//      Direction.stringToDirection(directionStr) match {
+//        case Some(direction) =>
+//          if (play(initialState.board, txtWord.getText.toUpperCase, (y, x), direction)) {
+//            incrementTextField(numberFound)
+//          } else {
+//            println("Tenta outra vez!")
+//          }
+//          incrementTextField(numberTries)
+//        case None => println("Direção inválida")
+//      }
+//    } catch {
+//      case _: NumberFormatException => println("Input inválido")
+//    }
   }
 
   @FXML
@@ -100,8 +94,8 @@ class Controller {
 
   @FXML
   def OnbtnQuitClick(): Unit = {
-    val stage: Stage = numberGame.getScene.getWindow.asInstanceOf[Stage]
-    stage.close()
+//    val stage: Stage = numberGame.getScene.getWindow.asInstanceOf[Stage]
+//    stage.close()
 
   }
 
@@ -110,10 +104,10 @@ class Controller {
 
   def initialize(): Unit = {
     // Define as condições de inicio
-    numberGame.setText("1")
-    numberTries.setText("0")
-    numberFound.setText("0")
-    cboxDirection.setItems(FXCollections.observableArrayList("North", "South", "East", "West", "NorthWest", "SouthWest", "Northeast", "Southeast"))
+  //  numberGame.setText("1")
+   // numberTries.setText("0")
+   // numberFound.setText("0")
+
     
   }
 }

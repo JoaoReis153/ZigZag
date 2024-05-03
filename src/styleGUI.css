@@ -1,0 +1,66 @@
+/* Estilos para os painéis */
+.panel {
+    -fx-background-radius: 10px;
+    -fx-border-color: #2C3E50;
+    -fx-border-radius: 10px;
+    -fx-border-width: 2px;
+}
+
+/* Estilos para os botões */
+.btn-orange {
+    -fx-text-fill: white;
+    -fx-background-color: orange;
+    -fx-background-radius: 30px;
+    -fx-font: bold italic 17.0 System;
+}
+
+/* Estilos para os labels */
+.label-orange {
+    -fx-text-fill: orange;
+    -fx-font-size: 40.0;
+}
+
+/* Estilos para os text fields */
+
+
+/* Estilos para a TableView */
+.table-view {
+    -fx-background-color: #34495E;
+    -fx-background-radius: 10px;
+    -fx-text-fill: white;
+
+}
+
+/* Estilos para o título */
+.title {
+    -fx-text-fill: orange;
+    -fx-font: bold italic 28.0 System;
+}
+
+.btn-label{
+
+    -fx-background-color: orange;
+    -fx-background-radius: 150%;
+    -fx-border-radius : 150%;
+    -fx-border-color: black 1px;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+
+
+}
+
+.btn-label:hover {
+    -fx-background-color: #ff8c00;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 ); /* Adiciona uma sombra suave */
+
+}
+
+.btn-orange:hover {
+    -fx-background-color: #ff8c00;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 ); /* Adiciona uma sombra suave */
+}
+
+
+

@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="761.0" style="-fx-background-color: #2C3E50;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="761.0" style="-fx-background-color: #2C3E50;" stylesheets="@styleGUI.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
 
     <children>
         <Pane layoutX="14.0" layoutY="41.0" prefHeight="394.0" prefWidth="456.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-border-color: #2C3E50; -fx-border-radius: 10px; -fx-border-width: 2px;">
             <children>
                 <GridPane hgap="10" layoutX="20.0" layoutY="20.0" prefHeight="350.0" prefWidth="416.0" style="-fx-padding: 12px;" vgap="10">
-                    <!-- Adicione elementos aqui para representar o tabuleiro do jogo -->
+
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
@@ -27,112 +27,139 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <!-- Substitua o texto "x" com a lógica do seu jogo -->
-                        <Label fx:id="lbl00" alignment="CENTER" prefHeight="58.0" prefWidth="78.0" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl01" alignment="CENTER" prefHeight="58.0" prefWidth="79.0" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl02" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="0">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl03" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="0">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl04" alignment="CENTER" prefHeight="58.0" prefWidth="69.0" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="0">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl10" alignment="CENTER" prefHeight="58.0" prefWidth="90.0" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl11" alignment="CENTER" prefHeight="58.0" prefWidth="77.0" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl12" alignment="CENTER" prefHeight="58.0" prefWidth="71.0" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl13" alignment="CENTER" prefHeight="58.0" prefWidth="79.0" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl14" alignment="CENTER" prefHeight="58.0" prefWidth="77.0" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl20" alignment="CENTER" prefHeight="58.0" prefWidth="83.0" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl21" alignment="CENTER" prefHeight="58.0" prefWidth="75.0" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl22" alignment="CENTER" prefHeight="58.0" prefWidth="87.0" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl23" alignment="CENTER" prefHeight="58.0" prefWidth="81.0" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl24" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl30" alignment="CENTER" prefHeight="58.0" prefWidth="83.0" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl31" alignment="CENTER" prefHeight="58.0" prefWidth="73.0" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl32" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl33" alignment="CENTER" prefHeight="58.0" prefWidth="72.0" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl34" alignment="CENTER" prefHeight="58.0" prefWidth="72.0" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl40" alignment="CENTER" prefHeight="58.0" prefWidth="115.0" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl41" alignment="CENTER" prefHeight="58.0" prefWidth="75.0" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl42" alignment="CENTER" prefHeight="58.0" prefWidth="85.0" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl43" alignment="CENTER" prefHeight="58.0" prefWidth="94.0" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
-                        <Label fx:id="lbl44" alignment="CENTER" prefHeight="58.0" prefWidth="71.0" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                     <font>
-                        <Font size="40.0" />
-                     </font></Label>
+                        <Button fx:id="btn00" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn01" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn02" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn03" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn04" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" style="-fx-background-radius: 50%;" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn10" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn11" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn12" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn13" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn14" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn20" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn21" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn22" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn23" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn24" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn30" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn31" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn32" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn33" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn34" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn40" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn41" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn42" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn43" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btn44" alignment="CENTER" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Button>
+
+
+
                     </children>
                 </GridPane>
             </children>
         </Pane>
-        <Pane layoutX="499.0" layoutY="41.0" prefHeight="394.0" prefWidth="248.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-border-color: #2C3E50; -fx-border-radius: 10px; -fx-border-width: 2px;">
+        <Pane layoutX="499.0" layoutY="41.0" prefHeight="394.0" prefWidth="248.0">
             <children>
                 <TableView fx:id="tableHistorico" layoutX="21.0" layoutY="40.0" prefHeight="340.0" prefWidth="206.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px;">
                     <columns>
@@ -153,37 +180,25 @@
                 <Font name="System Bold Italic" size="28.0" />
             </font>
         </Label>
-        <TextField fx:id="txtCoordRow" layoutX="14.0" layoutY="477.0" prefHeight="25.0" prefWidth="60.0" promptText="Row">
+        <TextField fx:id="txtWord" layoutX="19.0" layoutY="460.0" prefHeight="40.0" prefWidth="256.0" promptText="Word">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-        <TextField fx:id="txtCoordColumn" layoutX="84.0" layoutY="477.0" prefHeight="25.0" prefWidth="60.0" promptText="Column">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-        <TextField fx:id="txtWord" layoutX="338.0" layoutY="477.0" prefHeight="25.0" prefWidth="234.0" promptText="Word">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-        <ChoiceBox fx:id="cboxDirection" layoutX="167.0" layoutY="477.0" prefWidth="150.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></ChoiceBox>
-        <Button fx:id="btnSearch" layoutX="594.0" layoutY="475.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-text-fill: white; -fx-background-color: orange; -fx-background-radius: 5px;" text="Search" textFill="WHITE">
+        <Button fx:id="btnSearch" layoutX="290.0" layoutY="454.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="180.0" styleClass="btn-orange" text="Play" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-        <Button fx:id="btnNewGame" layoutX="515.0" layoutY="585.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="115.0" style="-fx-text-fill: white; -fx-background-color: orange; -fx-background-radius: 30px;" text="New Game" textFill="WHITE">
+        <Button fx:id="btnNewGame" layoutX="515.0" layoutY="585.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="115.0" styleClass="btn-orange" text="New Game" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-        <Button fx:id="btnQuit" layoutX="639.0" layoutY="585.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="115.0" style="-fx-text-fill: white; -fx-background-color: orange; -fx-background-radius: 30px;" text="Quit" textFill="WHITE">
+        <Button fx:id="btnQuit" layoutX="639.0" layoutY="585.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="115.0" styleClass="btn-orange" text="Quit" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
