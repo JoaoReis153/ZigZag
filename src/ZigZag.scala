@@ -13,15 +13,14 @@ object ZigZag extends App {
 
   private val initialRandom: MyRandom = MyRandom(seed)
 
-  private var (filledBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
-  filledBoard = initializeGameBoardWithWordsFromFile(filledBoard)
+  private val  (filledRandomBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
+  private val filledBoard = initializeGameBoardWithWordsFromFile(filledRandomBoard)
 
   private val initialState = GameState(0, 0, filledBoard)
 
   printRules()
   mainLoop(initialState, updatedRandom)
 
-  @tailrec
   private def mainLoop(gameState: GameState, random: MyRandom): Unit = {
     printGameState(gameState)
     showPrompt()
@@ -34,8 +33,8 @@ object ZigZag extends App {
 
       case "N" =>
         printGameOver()
-        var (newBoard, newRandom) = completeBoardRandomly(initialBoard, MyRandom(seed), randomChar)
-        newBoard = initializeGameBoardWithWordsFromFile(newBoard)
+        val (newRandomBoard, newRandom) = completeBoardRandomly(initialBoard, MyRandom(seed), randomChar)
+        val newBoard = initializeGameBoardWithWordsFromFile(newRandomBoard)
         printNewGame()
         mainLoop(GameState(0, 0, newBoard), newRandom)
 
@@ -45,30 +44,31 @@ object ZigZag extends App {
         mainLoop(gameState, random)
 
       case _ =>
-        var found: Int = gameState.numFound
-        var tries : Int = gameState.numTries
         try {
           print("x: ")
           val x = getUserInput.toInt
           print("y: ")
           val y = getUserInput.toInt
+          val coord = (y,x)
+
           print("\nDirection: (north,  northeast, east, southeast, south, southwest, west, northwest\n")
           val directionStr = getUserInput.toUpperCase
-          Direction.stringToDirection(directionStr) match {
-            case Some(direction) =>
-              tries = tries + 1
-              if (play(gameState.board, userInput, (y, x), direction)) {
-                found = found + 1
-                println("----> Correct! <----")
-              } else {
-                println("Try again!")
-              }
-            case None => println("Invalid direction")
+          val direction = Direction.stringToDirection(directionStr)
+
+          if (checkCoord(coord, initialBoard) && play(gameState.board, userInput, coord, direction)) {
+            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound + 1)
+            println()
+            println("----> Correct! <----")
+            mainLoop(newGameState, random)
+          } else {
+            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound)
+            println("Try again!")
+            mainLoop(newGameState, random)
           }
         } catch {
           case _: NumberFormatException => println("Invalid coordinates")
         }
-        val newGameState = gameState.copy(tries, found)
+        val newGameState = gameState.copy(gameState.numTries, gameState.numFound)
         mainLoop(newGameState, random)
     }
   }

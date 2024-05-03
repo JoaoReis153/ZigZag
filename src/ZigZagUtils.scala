@@ -8,6 +8,13 @@ object ZigZagUtils {
   type Board = List[List[Char]]
   private type Coord2D = (Int, Int) //(linha, coluna)
 
+  def checkCoord(c: (Int,Int), board: Board): Boolean = {
+    if (c._2 >= 0 && c._2 < board.length && c._1 >= 0 && c._1 < board.length)
+      return true
+    false
+  }
+
+
   // Direções possíveis
   object Direction extends Enumeration {
     type Direction = Value
@@ -27,8 +34,17 @@ object ZigZagUtils {
 
     // Converte uma string em uma direção
     // Usar Option da nos um modo de lidar com a ausência de elementos
-    def stringToDirection(input: String): Option[Direction.Value] = {
-      Direction.values.find(_.toString.equalsIgnoreCase(input))
+    def stringToDirection(input: String): Direction.Value = {
+      input.toLowerCase() match {
+        case "north" => North
+        case "northeast" => NorthEast
+        case "east" => East
+        case "southeast" => SouthEast
+        case "south" => South
+        case "southwest" => SouthWest
+        case "west" => West
+        case _ => NorthWest
+      }
     }
   }
 
@@ -110,32 +126,27 @@ object ZigZagUtils {
 
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
 
-/*
+
     def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
-      println("word: " + word)
-      //println(word.isEmpty)
-      //println(word.isBlank)
-      //println("-")
       if(word.isEmpty) return true
       if(visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
         false
       } else {
         //println("ola : " + start)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.North), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthEast), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.East), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthEast), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.South), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthWest), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.West), start::visitedCoordinates)
-        searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthWest), start::visitedCoordinates)
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.North), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthEast), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.East), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthEast), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.South), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthWest), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.West), start::visitedCoordinates)) return true
+        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthWest), start::visitedCoordinates)) return true
+        false
       }
     }
-*/
+/*
     def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
-      println("word: " + word)
       if (word.isEmpty) {
-        println("Word found!")
         return true
       }
       if (visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
@@ -145,18 +156,18 @@ object ZigZagUtils {
         val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
           Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
 
-        // Check each direction and return true if any direction results in a complete word search
         directions.exists { dir =>
           val nextCoord = Direction.nextCoord(start, dir)
           searchCloseCoordinates(board, word.tail, nextCoord, newVisited)
         }
       }
     }
+    */
 
 
     val newCoord = Direction.nextCoord(start, direction)
-    if(getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
-      searchCloseCoordinates(board, word.tail, newCoord, List())
+    if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
+      searchCloseCoordinates(board, word.tail, newCoord, List()) && play2(board, word, start, direction)
     } else {
       false
     }
@@ -183,11 +194,13 @@ object ZigZagUtils {
         // -> a segunda coordenada no ficheiro corresponde à coordenada dada mais a direção dada
 
         if (x == wordAnswer && coordsList.head.head == coordAnswer && Direction.nextCoord(coordAnswer, direction) == coordsList.head.tail.head) {
-          checkWordIsInBoard(board, wordAnswer, coordsList.head)
+          true
         } else {
           searchForTheGivenWordInTheList(xs, coordsList.tail, coordAnswer, wordAnswer, direction)
         }
     }
+
+    /*
 
     // Verifica se para cada posição da palavra está a letra suposta
     @tailrec
@@ -201,8 +214,15 @@ object ZigZagUtils {
         }
     }
 
+    */
+
+
     searchForTheGivenWordInTheList(words, positions, start, word, direction)
   }
+
+
+
+
 
   def getSeedFromFile(): Int = {
     val filePath = "src/seed.txt"
@@ -214,8 +234,6 @@ object ZigZagUtils {
       bufferedSource.close()
     }
   }
-
-
 
   // Extrai as palavras e respetivas coordenadas do ficheiro
   private def readWordsAndCoordinatesFromFile(): (List[String], List[List[Coord2D]]) = {
