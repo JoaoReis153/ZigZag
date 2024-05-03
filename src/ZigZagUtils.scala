@@ -2,6 +2,7 @@ import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 import scala.io.Source
 import scala.util.matching.Regex
+import java.io._
 
 object ZigZagUtils {
 
@@ -126,25 +127,6 @@ object ZigZagUtils {
 
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
 
-
-    def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
-      if(word.isEmpty) return true
-      if(visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
-        false
-      } else {
-        //println("ola : " + start)
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.North), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthEast), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.East), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthEast), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.South), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.SouthWest), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.West), start::visitedCoordinates)) return true
-        if(searchCloseCoordinates(board, word.tail, Direction.nextCoord(start, Direction.NorthWest), start::visitedCoordinates)) return true
-        false
-      }
-    }
-/*
     def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
       if (word.isEmpty) {
         return true
@@ -162,8 +144,6 @@ object ZigZagUtils {
         }
       }
     }
-    */
-
 
     val newCoord = Direction.nextCoord(start, direction)
     if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
@@ -173,11 +153,8 @@ object ZigZagUtils {
     }
   }
 
-
-
 // Joga a palavra, na posição inicial, segundo a direção dada
-  def play2(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
-    val file: String = "src/givenWords.txt"
+  private def play2(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
 
     // Extrai todas as palavras e respetivas posições do ficheiro
     val (words, positions) = readWordsAndCoordinatesFromFile()
@@ -221,19 +198,21 @@ object ZigZagUtils {
   }
 
 
-
-
-
-  def getSeedFromFile(): Int = {
-    val filePath = "src/seed.txt"
-    val bufferedSource = Source.fromFile(filePath)
-    try {
-      val line = bufferedSource.getLines().next()
-      line.toInt
-    } finally {
-      bufferedSource.close()
-    }
+  def readRandomFromFile(): MyRandom = {
+    val file = "src/seed.txt"
+    val bufferedSource = Source.fromFile(file)
+    val line = bufferedSource.getLines().next()
+    bufferedSource.close()
+    MyRandom(line.toLong)
   }
+
+  def writeRandomInFile(myRandom: MyRandom): Unit = {
+    val file = "src/seed.txt"
+    val pw = new PrintWriter(new File(file))
+    pw.write(myRandom.toString)
+    pw.close()
+  }
+
 
   // Extrai as palavras e respetivas coordenadas do ficheiro
   private def readWordsAndCoordinatesFromFile(): (List[String], List[List[Coord2D]]) = {
@@ -278,9 +257,7 @@ object ZigZagUtils {
 
   // Inicializa o tabuleiro com as palavras do ficheiro
   def initializeGameBoardWithWordsFromFile(board: Board): Board = {
-    val file: String = "src/givenWords.txt"
     val (words, positions) = readWordsAndCoordinatesFromFile()
-
     setBoardWithWords(board, words, positions)
   }
 
@@ -310,7 +287,7 @@ object ZigZagUtils {
   }
 
 
-  def printGameStateList(lst: List[GameState]): String = {
+  private def printGameStateList(lst: List[GameState]): String = {
     lst match {
       case Nil => ""
       case head :: tail => printGameState(head) + printGameStateList(tail)
@@ -323,8 +300,7 @@ object ZigZagUtils {
 
   def printGameOver(): Unit = println("\n=== GAME OVER ===")
 
-
-  def printNewGame(): Unit = ("\n=== NEW GAME ===")
+  def printNewGame(): Unit = "\n=== NEW GAME ==="
 
 
   def printRules(): Unit = {

@@ -9,9 +9,7 @@ object ZigZag extends App {
 
   private val initialBoard: Board = List.fill(5)(List.fill(5)('.'))
 
-  private val seed = ZigZagUtils.getSeedFromFile();
-
-  private val initialRandom: MyRandom = MyRandom(seed)
+  private val initialRandom: MyRandom = ZigZagUtils.readRandomFromFile();
 
   private val  (filledRandomBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
   private val filledBoard = initializeGameBoardWithWordsFromFile(filledRandomBoard)
@@ -32,8 +30,9 @@ object ZigZag extends App {
         printGameState(gameState)
 
       case "N" =>
-        printGameOver()
-        val (newRandomBoard, newRandom) = completeBoardRandomly(initialBoard, MyRandom(seed), randomChar)
+        printNewGame()
+        writeRandomInFile(random)
+        val (newRandomBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
         val newBoard = initializeGameBoardWithWordsFromFile(newRandomBoard)
         printNewGame()
         mainLoop(GameState(0, 0, newBoard), newRandom)

@@ -11,4 +11,5 @@ case class MyRandom(seed: Long) extends Random {
     (char, nextRandom)
   }
 
+  override def toString: String = seed.toString
 }
