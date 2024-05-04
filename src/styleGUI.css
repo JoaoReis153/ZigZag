@@ -37,29 +37,24 @@
     -fx-font: bold italic 28.0 System;
 }
 
-.btn-label{
-
+.btn-label {
     -fx-background-color: orange;
     -fx-background-radius: 150%;
-    -fx-border-radius : 150%;
-    -fx-border-color: black 1px;
+    -fx-border-radius: 150%;
     -fx-text-fill: white;
     -fx-cursor: hand;
-
-
 }
 
 .btn-label:hover {
     -fx-background-color: #ff8c00;
     -fx-text-fill: white;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 ); /* Adiciona uma sombra suave */
-
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 10, 0, 0, 1); /* Adiciona uma sombra suave */
 }
 
 .btn-orange:hover {
     -fx-background-color: #ff8c00;
     -fx-text-fill: white;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.7) , 10,0,0,1 ); /* Adiciona uma sombra suave */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 10, 0, 0, 1); /* Adiciona uma sombra suave */
 }
 
 

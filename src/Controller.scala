@@ -1,113 +1,103 @@
-
-import javafx.collections.FXCollections
+import ZigZag.{initialBoard, initialRandom}
+import ZigZagUtils.{completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
+import javafx.scene.paint.Color
+import javafx.scene.control.Button
 import javafx.fxml.FXML
-import javafx.scene.control.{Button, ChoiceBox, Label, TableColumn, TableRow, TableView, TextField}
+import javafx.scene.layout.GridPane
+import javafx.event.ActionEvent
+import javafx.application
+import javafx.application.Platform
 
 
 class Controller {
 
-  
-  //Valores do histórico:
-  @FXML
-  private var numberGame: TextField = _
-  private var numberTries: TextField = _
-  private var numberFound: TextField = _
+  @FXML private var btn00: Button = _
+  @FXML private var btn01: Button = _
+  @FXML private var btn02: Button = _
+  @FXML private var btn03: Button = _
+  @FXML private var btn04: Button = _
+  @FXML private var btn10: Button = _
+  @FXML private var btn11: Button = _
+  @FXML private var btn12: Button = _
+  @FXML private var btn13: Button = _
+  @FXML private var btn14: Button = _
+  @FXML private var btn20: Button = _
+  @FXML private var btn21: Button = _
+  @FXML private var btn22: Button = _
+  @FXML private var btn23: Button = _
+  @FXML private var btn24: Button = _
+  @FXML private var btn30: Button = _
+  @FXML private var btn31: Button = _
+  @FXML private var btn32: Button = _
+  @FXML private var btn33: Button = _
+  @FXML private var btn34: Button = _
+  @FXML private var btn40: Button = _
+  @FXML private var btn41: Button = _
+  @FXML private var btn42: Button = _
+  @FXML private var btn43: Button = _
+  @FXML private var btn44: Button = _
 
-  //Letras do ZigZag :
-  @FXML private var lbl00: Label = _
-  @FXML private var lbl01: Label = _
-  @FXML private var lbl02: Label = _
-  @FXML private var lbl03: Label = _
-  @FXML private var lbl04: Label = _
-  @FXML private var lbl10: Label = _
-  @FXML private var lbl11: Label = _
-  @FXML private var lbl12: Label = _
-  @FXML private var lbl13: Label = _
-  @FXML private var lbl14: Label = _
-  @FXML private var lbl20: Label = _
-  @FXML private var lbl21: Label = _
-  @FXML private var lbl22: Label = _
-  @FXML private var lbl23: Label = _
-  @FXML private var lbl24: Label = _
-  @FXML private var lbl30: Label = _
-  @FXML private var lbl31: Label = _
-  @FXML private var lbl32: Label = _
-  @FXML private var lbl33: Label = _
-  @FXML private var lbl34: Label = _
-  @FXML private var lbl40: Label = _
-  @FXML private var lbl41: Label = _
-  @FXML private var lbl42: Label = _
-  @FXML private var lbl43: Label = _
-  @FXML private var lbl44: Label = _
+  private var selectedButtons: List[Button] = Nil
 
-  //Textfields :
+  // Define a cor de fundo para os botões selecionados
+  private val selectedButtonColor = Color.DARKORANGE
 
-  @FXML
-  private var txtWord: TextField = _
+  // Método para tratamento de cliques nos botões da grade
+  def handleButtonClick(event: ActionEvent): Unit = {
+    val clickedButton: Button = event.getSource.asInstanceOf[Button] // Obtém o botão clicado
+    val row: Int = GridPane.getRowIndex(clickedButton) // Obtém a linha do botão
+    val col: Int = GridPane.getColumnIndex(clickedButton) // Obtém a coluna do botão
 
+    val button = getButton(row, col)
+    if (button.isDisable) return
 
-  //botoes :
-  @FXML
-  private var btnSearch: Button = _
-  @FXML
-  private var btnNewGame: Button = _
-  @FXML
-  private var btnQuit: Button = _
-
-
-  // Função auxiliar para incrementar um contador
-  def incrementTextField(textField: TextField): Unit = {
-    val currentValue = textField.getText.toInt
-    val newValue = currentValue + 1
-    textField.setText(newValue.toString)
+    button.setStyle("-fx-background-color: " + colorToHex(selectedButtonColor))
+    selectedButtons = button :: selectedButtons
+    button.setDisable(true)
   }
 
-  // Métodos de evento para os botões
+  // Método para tratamento de cliques no botão "Play"
+  def handlePlayButtonClick(): Unit = {
+    // Lógica para verificar se a palavra está correta
+    // e atualizar os botões conforme necessário
 
-  // Evento de clique do botão de pesquisa
-  @FXML
-  def OnbtnSearchClick(): Unit = {
-//    try {
-//      val x = txtCoordRow.getText.toInt
-//      val y = txtCoordColumn.getText.toInt
-//      val directionStr = cboxDirection.getValue.toUpperCase
-//      Direction.stringToDirection(directionStr) match {
-//        case Some(direction) =>
-//          if (play(initialState.board, txtWord.getText.toUpperCase, (y, x), direction)) {
-//            incrementTextField(numberFound)
-//          } else {
-//            println("Tenta outra vez!")
-//          }
-//          incrementTextField(numberTries)
-//        case None => println("Direção inválida")
-//      }
-//    } catch {
-//      case _: NumberFormatException => println("Input inválido")
-//    }
+    selectedButtons.foreach { button =>
+
+      button.getStyleClass.add("btn-label")
+      button.setDisable(false) // Reativa o botão
+    }
+    selectedButtons = Nil
   }
 
-  @FXML
-  def OnbtnNewGameClick(): Unit = {
-    initialize()
-
+  private def getButton(row: Int, col: Int): Button = {
+    val colIndex = col
+    val rowIndex = row
+    val buttonId = s"btn$rowIndex$colIndex"
+    val field = getClass.getDeclaredField(buttonId)
+    field.setAccessible(true)
+    field.get(this).asInstanceOf[Button]
   }
 
-  @FXML
-  def OnbtnQuitClick(): Unit = {
-//    val stage: Stage = numberGame.getScene.getWindow.asInstanceOf[Stage]
-//    stage.close()
-
+  // Converte um objeto Color para uma string hexadecimal
+  private def colorToHex(color: Color): String = {
+    val red = (color.getRed * 255).toInt
+    val green = (color.getGreen * 255).toInt
+    val blue = (color.getBlue * 255).toInt
+    f"#$red%02X$green%02X$blue%02X"
   }
 
 
+  def handleQuitButtonClick(): Unit = {
+    Platform.exit()
+  }
+
+  def fillButtonsRandomly(): Unit = {
+
+
+  }
 
 
   def initialize(): Unit = {
-    // Define as condições de inicio
-  //  numberGame.setText("1")
-   // numberTries.setText("0")
-   // numberFound.setText("0")
-
-    
+    fillButtonsRandomly()
   }
 }
