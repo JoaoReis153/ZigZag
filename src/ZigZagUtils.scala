@@ -49,6 +49,9 @@ object ZigZagUtils {
     }
   }
 
+  private def isValidCoord(board: Board, coord: Coord2D): Boolean =
+    coord._1 >= 0 && coord._1 < board.length && coord._2 >= 0 && coord._2 < board(coord._1).length
+
 
   // Gera um caractere aleatório
   def randomChar(rand: MyRandom): (Char, MyRandom) = {
@@ -76,9 +79,13 @@ object ZigZagUtils {
   }
 
   private def getOneCell(board: Board, coord: Coord2D): Char = {
-    board(coord._1)(coord._2)
+    val (x, y) = coord
+    if (isValidCoord(board, coord)) {
+      board(x)(y)
+    } else {
+      '.' // Returning '.' for out of bounds
+    }
   }
-
 
   // Preenche o tabuleiro com as palavras nas posições dadas
   private def setBoardWithWords(board: Board, words: List[String], positions: List[List[Coord2D]]): Board = {
@@ -87,7 +94,9 @@ object ZigZagUtils {
     @tailrec
     def fillWord(board: Board, word: String, positions: List[Coord2D], index: Int): Board = positions match {
       case Nil => board
-      case head :: tail => fillWord(fillOneCell(board, word(index), head), word, tail, index + 1)
+      case head :: tail => fillWord(fillOneCell(
+
+        , word(index), head), word, tail, index + 1)
     }
 
     // Preenche o tabuleiro com as palavras dadas
@@ -125,36 +134,36 @@ object ZigZagUtils {
     completeBoard(board, r)
   }
 
-  def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
+  private def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
+    if (word.isEmpty) {
+      return true
+    }
+    if (visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
+      false
+    } else {
+      val newVisited = start :: visitedCoordinates
+      val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
+        Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
 
-    def searchCloseCoordinates(board: Board, word: String, start: Coord2D, visitedCoordinates : List[Coord2D]): Boolean = {
-      if (word.isEmpty) {
-        return true
-      }
-      if (visitedCoordinates.contains(start) || getOneCell(board, start) != word.head) {
-        false
-      } else {
-        val newVisited = start :: visitedCoordinates
-        val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
-          Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
-
-        directions.exists { dir =>
-          val nextCoord = Direction.nextCoord(start, dir)
-          searchCloseCoordinates(board, word.tail, nextCoord, newVisited)
-        }
+      directions.exists { dir =>
+        val nextCoord = Direction.nextCoord(start, dir)
+        searchCloseCoordinates(board, word.tail, nextCoord, newVisited)
       }
     }
+  }
 
+
+  def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
     val newCoord = Direction.nextCoord(start, direction)
     if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
-      searchCloseCoordinates(board, word.tail, newCoord, List()) && play2(board, word, start, direction)
+      searchCloseCoordinates(board, word.tail, newCoord, List())
     } else {
       false
     }
   }
 
 // Joga a palavra, na posição inicial, segundo a direção dada
-  private def play2(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
+  private def checkWordInBoard(board: Board, word: String, start: Coord2D): Boolean = {
 
     // Extrai todas as palavras e respetivas posições do ficheiro
     val (words, positions) = readWordsAndCoordinatesFromFile()
@@ -162,39 +171,85 @@ object ZigZagUtils {
     // Procura a palavra jogada nas palavras extraidas do ficheiro
     // Quando encontrar chama a função "checkWordIsInBoard"
     @tailrec
-    def searchForTheGivenWordInTheList(wordsList: List[String], coordsList: List[List[Coord2D]], coordAnswer: Coord2D, wordAnswer: String, direction: Direction.Value): Boolean = wordsList match {
+    def searchForTheGivenWordInTheList(board: Board, wordsList: List[String], coordsList: List[List[Coord2D]], coordAnswer: Coord2D, wordAnswer: String): Boolean = wordsList match {
       case Nil => false
       case x :: xs =>
-        //Verificar se:
-        // -> a palavra no topo da lista corresponde à resposta dada
-        // -> a primeira coordenada corresponde à primeira coordenada dessa palavra no ficheiro
-        // -> a segunda coordenada no ficheiro corresponde à coordenada dada mais a direção dada
-
-        if (x == wordAnswer && coordsList.head.head == coordAnswer && Direction.nextCoord(coordAnswer, direction) == coordsList.head.tail.head) {
-          true
+        if (x == wordAnswer) {
+          checkLettersInBoard(board, x, coordsList.head)
         } else {
-          searchForTheGivenWordInTheList(xs, coordsList.tail, coordAnswer, wordAnswer, direction)
+          searchForTheGivenWordInTheList(board, xs, coordsList.tail, coordAnswer, wordAnswer)
         }
     }
-
-    /*
 
     // Verifica se para cada posição da palavra está a letra suposta
     @tailrec
-    def checkWordIsInBoard(board: Board, wordAnswer: String, coordsList: List[Coord2D]): Boolean = coordsList match {
+    def checkLettersInBoard(board: Board, wordAnswer: String, coordsList: List[Coord2D]): Boolean = coordsList match {
       case Nil => true
       case x :: xs =>
-        if (wordAnswer.head != board(x._1)(x._2)) {
+        if (wordAnswer.head != getOneCell(board, (x._1,x._2))) {
           false
         } else {
-          checkWordIsInBoard(board, wordAnswer.tail, xs)
+          checkLettersInBoard(board, wordAnswer.tail, xs)
         }
     }
 
-    */
+    searchForTheGivenWordInTheList(board, words, positions, start, word)
+
+  }
 
 
-    searchForTheGivenWordInTheList(words, positions, start, word, direction)
+  private def checkBoard(board: Board):Boolean = {
+    val (words, positions) = readWordsAndCoordinatesFromFile()
+
+    @tailrec
+    def checkWords(board: Board, wordsList: List[String], coordsList: List[List[Coord2D]]): Boolean = (wordsList, coordsList) match {
+      case (Nil, Nil) => true
+      case (word :: xs, coord :: ys) =>
+        if (checkWordInBoard(board, word, coord.head)) checkWords(board, xs, ys)
+        else false
+    }
+
+    def playInEveryDirection(board: Board, word: String, start: Coord2D): Int = {
+      val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
+        Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
+      directions.map { dir =>
+        if (play(board, word, start, dir)) 1 else 0
+      }.sum
+    }
+
+
+    @tailrec
+    def processRow(board: Board, word: String, rowIndex: Int, columnIndex: Int = 0, acc: Int = 0): Int = {
+      if (columnIndex >= board(rowIndex).length) acc
+      else {
+        val start = (rowIndex, columnIndex)
+        val count = playInEveryDirection(board, word, start)
+        processRow(board, word, rowIndex, columnIndex + 1, acc + count)
+      }
+    }
+
+    @tailrec
+    def processBoard(board: Board, word: String, rowIndex: Int = 0, acc: Int = 0): Int = {
+      if (rowIndex >= board.length) acc
+      else {
+        val count = processRow(board, word, rowIndex)
+        processBoard(board, word, rowIndex + 1, acc + count)
+      }
+    }
+
+    @tailrec
+    def checkNoDuplicates(board: Board, wordsList: List[String]): Boolean = wordsList match {
+      case Nil => true
+      case x :: xs =>
+        val counter = processBoard(board, x)
+        if (counter > 1) {
+          false
+        } else {
+          checkNoDuplicates(board, xs)
+        }
+    }
+
+    checkWords(board, words, positions) && checkNoDuplicates(board, words)
   }
 
 
@@ -245,6 +300,8 @@ object ZigZagUtils {
           // Caso encontremos o padrão das palavras
           // Adicionamo-la à lista das palavras
           val word = x.toUpperCase
+          if(word.length < 2) throw new IllegalArgumentException("Found a word too small")
+          if(word.length > 25) throw new IllegalArgumentException("Found a word too big")
           getFormatFromList(xs, words :+ word, coordinates, currentCoords)
         case _ =>
           //Qualquer linha fora do esperado, é ignorada
@@ -258,7 +315,11 @@ object ZigZagUtils {
   // Inicializa o tabuleiro com as palavras do ficheiro
   def initializeGameBoardWithWordsFromFile(board: Board): Board = {
     val (words, positions) = readWordsAndCoordinatesFromFile()
-    setBoardWithWords(board, words, positions)
+    val newBoard = setBoardWithWords(board, words, positions)
+    if(!checkBoard(newBoard))
+      throw new IllegalArgumentException("Board wrongly formated, it may just be bad luck.")
+
+    newBoard
   }
 
 
