@@ -3,7 +3,7 @@ import ZigZagUtils._
 
 import scala.annotation.tailrec
 
-case class GameState(numTries: Int, numFound: Int, board: Board)
+case class GameState(numTries: Int, numFound: Int, board: Board, greenCoordinates: List[Coord2D])
 
 object ZigZag extends App {
 
@@ -14,7 +14,7 @@ object ZigZag extends App {
   private val  (filledRandomBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
   private val filledBoard = initializeGameBoardWithWordsFromFile(filledRandomBoard)
 
-  private val initialState = GameState(0, 0, filledBoard)
+  private val initialState = GameState(0, 0, filledBoard, List())
 
   printRules()
   mainLoop(initialState, updatedRandom)
@@ -35,7 +35,7 @@ object ZigZag extends App {
         val (newRandomBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
         val newBoard = initializeGameBoardWithWordsFromFile(newRandomBoard)
         printNewGame()
-        mainLoop(GameState(0, 0, newBoard), newRandom)
+        mainLoop(GameState(0, 0, newBoard, List()), newRandom)
 
 
       case "R" =>
@@ -54,8 +54,9 @@ object ZigZag extends App {
           val directionStr = getUserInput.toUpperCase
           val direction = Direction.stringToDirection(directionStr)
 
-          if (checkCoord(coord, initialBoard) && play(gameState.board, userInput, coord, direction)) {
-            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound + 1)
+          if (checkCoord(coord, initialBoard) && play(gameState.board, userInput, coord, direction)._1) {
+            println("Green coordinates: " + play(gameState.board, userInput, coord, direction)._2)
+            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound + 1, gameState.board,  gameState.greenCoordinates ++ play(gameState.board, userInput, coord, direction)._2)
             println()
             println("----> Correct! <----")
             mainLoop(newGameState, random)

@@ -7,7 +7,7 @@ import java.io._
 object ZigZagUtils {
 
   type Board = List[List[Char]]
-  private type Coord2D = (Int, Int) //(linha, coluna)
+  type Coord2D = (Int, Int) //(linha, coluna)
 
   def checkCoord(c: (Int,Int), board: Board): Boolean = {
     if (c._2 >= 0 && c._2 < board.length && c._1 >= 0 && c._1 < board.length)
@@ -150,14 +150,23 @@ object ZigZagUtils {
     }
   }
 
-
-  def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): Boolean = {
-    val newCoord = Direction.nextCoord(start, direction)
-    if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head) {
-      searchCloseCoordinates(board, word.tail, newCoord, List())
-    } else {
-      false
+  def getWordPositions(word: String): List[Coord2D] = {
+    val (words, positions) = readWordsAndCoordinatesFromFile()
+    def getWordPositionsAux(wordsList: List[String], coordsList: List[List[Coord2D]], word: String): List[Coord2D] = (wordsList, coordsList) match {
+      case (Nil, Nil) => List()
+      case (x :: xs, y :: ys) =>
+        if (x == word) y
+        else getWordPositionsAux(xs, ys, word)
     }
+    getWordPositionsAux(words, positions, word)
+  }
+
+  def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): (Boolean, List[Coord2D]) = {
+    val newCoord = Direction.nextCoord(start, direction)
+    if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head && searchCloseCoordinates(board, word.tail, newCoord, List())) {
+        (true, getWordPositions(word))
+    } else (false, Nil)
+
   }
 
 // Joga a palavra, na posição inicial, segundo a direção dada
@@ -211,7 +220,7 @@ object ZigZagUtils {
       val directions = List(Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast,
         Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest)
       directions.map { dir =>
-        if (play(board, word, start, dir)) 1 else 0
+        if (play(board, word, start, dir)._1) 1 else 0
       }.sum
     }
 
@@ -332,20 +341,33 @@ object ZigZagUtils {
 
   def printGameState(gameState: GameState): Unit = {
     println(s"\nNumber of Tries: ${gameState.numTries}")
-    println(s"Number of found words: ${gameState.numFound}")
+    println(s"Number of Found Words: ${gameState.numFound}")
 
-    @tailrec
-    def printBoard(board: Board): Unit = board match {
-      case Nil => // Base case: no more rows to print
-      case head :: tail => // Recursive case: print the current row and proceed to the next
-        println(head.mkString(" "))
-        printBoard(tail) // Recursively print the rest of the board
+    // Helper function to determine if a coordinate should be colored green
+    def isGreenCoord(x: Int, y: Int, greenCoords: List[Coord2D]): Boolean = {
+      greenCoords.contains((x, y))
     }
 
 
-    printBoard(gameState.board)
-  }
+    @tailrec
+    def printBoard(board: Board, greenCoords: List[Coord2D], currentRow: Int = 0): Unit = board match {
+      case Nil =>
+      case head :: tail =>
+        head.zipWithIndex.foreach {
+          case (char, colIndex) =>
+            if (isGreenCoord(currentRow, colIndex, greenCoords)) {
+              print(s"\u001B[32m$char\u001B[0m ")
+            } else {
+              print(s"$char ")
+            }
+        }
+        println()
+        printBoard(tail, greenCoords, currentRow + 1)
+    }
 
+
+    printBoard(gameState.board, gameState.greenCoordinates)
+  }
 
   private def printGameStateList(lst: List[GameState]): String = {
     lst match {
