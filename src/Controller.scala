@@ -1,5 +1,5 @@
 import ZigZag.{initialBoard, initialRandom}
-import ZigZagUtils.{completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
+import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
 import javafx.scene.paint.Color
 import javafx.scene.control.Button
 import javafx.fxml.FXML
@@ -58,8 +58,27 @@ class Controller {
 
   // Método para tratamento de cliques no botão "Play"
   def handlePlayButtonClick(): Unit = {
-    // Lógica para verificar se a palavra está correta
-    // e atualizar os botões conforme necessário
+
+    def play(board: Board, word: String): Unit = {
+      val file: String = "src/givenWords.txt"
+
+      // Extrai todas as palavras do ficheiro
+      val words = Source.fromFile(file).getLines().toList
+
+      // Verifica se as letras seleccionadas nos botões correspondem a alguma palavra no ficheiro
+      val wordFound = words.exists(documentWord => documentWord == selectedButtons.map(_.getText).mkString)
+
+
+      if (wordFound) {
+
+      
+
+      } else {
+
+        
+
+      }
+    }
 
     selectedButtons.foreach { button =>
 
@@ -68,6 +87,8 @@ class Controller {
     }
     selectedButtons = Nil
   }
+
+  
 
   private def getButton(row: Int, col: Int): Button = {
     val colIndex = col
@@ -93,7 +114,30 @@ class Controller {
 
   def fillButtonsRandomly(): Unit = {
 
+    initializeGameBoardWithWordsFromFile(board)
+    
+    val buttons = List(
+      List(btn00, btn01, btn02, btn03, btn04),
+      List(btn10, btn11, btn12, btn13, btn14),
+      List(btn20, btn21, btn22, btn23, btn24),
+      List(btn30, btn31, btn32, btn33, btn34),
+      List(btn40, btn41, btn42, btn43, btn44)
+    )
 
+    
+    def fillButtons(board: Board, row: Int, col: Int): Unit = {
+      if (row < board.length) {
+        if (col < board(row).length) {
+          buttons(row)(col).setText(board(row)(col).toString)
+          fillButtons(board, row, col + 1)
+        } else {
+          fillButtons(board, row + 1, 0)
+        }
+      }
+    }
+
+    
+    fillButtons(board, 0, 0)
   }
 
 
