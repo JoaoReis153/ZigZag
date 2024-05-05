@@ -94,9 +94,7 @@ object ZigZagUtils {
     @tailrec
     def fillWord(board: Board, word: String, positions: List[Coord2D], index: Int): Board = positions match {
       case Nil => board
-      case head :: tail => fillWord(fillOneCell(
-
-        , word(index), head), word, tail, index + 1)
+      case head :: tail => fillWord(fillOneCell(board, word(index), head), word, tail, index + 1)
     }
 
     // Preenche o tabuleiro com as palavras dadas
@@ -343,6 +341,7 @@ object ZigZagUtils {
         println(head.mkString(" "))
         printBoard(tail) // Recursively print the rest of the board
     }
+
 
     printBoard(gameState.board)
   }
