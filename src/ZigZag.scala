@@ -1,29 +1,24 @@
+import ZigZagUtils._
 
-
-
-import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt}
 
 import scala.annotation.tailrec
 
-case class GameState(numTries: Int, numFound: Int, board: Board)
+case class GameState(numTries: Int, numFound: Int, board: Board, greenCoordinates: List[Coord2D])
 
 object ZigZag extends App {
 
   private val initialBoard: Board = List.fill(5)(List.fill(5)('.'))
 
-  private val currentTime = System.currentTimeMillis()
+  private val initialRandom: MyRandom = ZigZagUtils.readRandomFromFile();
 
-  private val initialRandom: MyRandom = MyRandom(currentTime)
+  private val  (filledRandomBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
+  private val filledBoard = initializeGameBoardWithWordsFromFile(filledRandomBoard)
 
-  private var (filledBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
-  filledBoard = initializeGameBoardWithWordsFromFile(filledBoard)
-  
-  private val initialState = GameState(0, 0, filledBoard)
+  private val initialState = GameState(0, 0, filledBoard, List())
 
   printRules()
   mainLoop(initialState, updatedRandom)
 
-  @tailrec
   private def mainLoop(gameState: GameState, random: MyRandom): Unit = {
     printGameState(gameState)
     showPrompt()
@@ -35,11 +30,12 @@ object ZigZag extends App {
         printGameState(gameState)
 
       case "N" =>
-        printGameOver()
-        var (newBoard, newRandom) = completeBoardRandomly(initialBoard, MyRandom(currentTime), randomChar)
-        newBoard = initializeGameBoardWithWordsFromFile(newBoard)
         printNewGame()
-        mainLoop(GameState(0, 0, newBoard), newRandom)
+        writeRandomInFile(random)
+        val (newRandomBoard, newRandom) = completeBoardRandomly(initialBoard, random, randomChar)
+        val newBoard = initializeGameBoardWithWordsFromFile(newRandomBoard)
+        printNewGame()
+        mainLoop(GameState(0, 0, newBoard, List()), newRandom)
 
 
       case "R" =>
@@ -47,30 +43,32 @@ object ZigZag extends App {
         mainLoop(gameState, random)
 
       case _ =>
-        var found: Int = gameState.numFound
-        var tries : Int = gameState.numTries
         try {
           print("x: ")
           val x = getUserInput.toInt
           print("y: ")
           val y = getUserInput.toInt
+          val coord = (y,x)
+
           print("\nDirection: (north,  northeast, east, southeast, south, southwest, west, northwest\n")
           val directionStr = getUserInput.toUpperCase
-          Direction.stringToDirection(directionStr) match {
-            case Some(direction) =>
-              tries = tries + 1
-              if (play(gameState.board, userInput, (y, x), direction)) {
-                found = found + 1
-                println("----> Correct! <----")
-              } else {
-                println("Try again!")
-              }
-            case None => println("Invalid direction")
+          val direction = Direction.stringToDirection(directionStr)
+
+          if (checkCoord(coord, initialBoard) && play(gameState.board, userInput, coord, direction)._1) {
+            println("Green coordinates: " + play(gameState.board, userInput, coord, direction)._2)
+            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound + 1, gameState.board,  gameState.greenCoordinates ++ play(gameState.board, userInput, coord, direction)._2)
+            println()
+            println("----> Correct! <----")
+            mainLoop(newGameState, random)
+          } else {
+            val newGameState = gameState.copy(gameState.numTries + 1, gameState.numFound)
+            println("Try again!")
+            mainLoop(newGameState, random)
           }
         } catch {
           case _: NumberFormatException => println("Invalid coordinates")
         }
-        val newGameState = gameState.copy(tries, found)
+        val newGameState = gameState.copy(gameState.numTries, gameState.numFound)
         mainLoop(newGameState, random)
     }
   }
