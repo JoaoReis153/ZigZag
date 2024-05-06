@@ -1,5 +1,5 @@
-
 import ZigZagUtils._
+
 
 import scala.annotation.tailrec
 
