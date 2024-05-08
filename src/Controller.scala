@@ -1,7 +1,7 @@
 import ZigZag.{initialBoard, initialRandom}
 import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
 import javafx.scene.paint.Color
-import javafx.scene.control.Button
+import javafx.scene.control.{Button, TextField}
 import javafx.fxml.FXML
 import javafx.scene.layout.GridPane
 import javafx.event.ActionEvent
@@ -10,6 +10,9 @@ import javafx.application.Platform
 
 
 class Controller {
+
+  // Referência ao TextField
+  var txtWord: TextField = _
 
   @FXML private var btn00: Button = _
   @FXML private var btn01: Button = _
@@ -37,58 +40,59 @@ class Controller {
   @FXML private var btn43: Button = _
   @FXML private var btn44: Button = _
 
+  // Variáveis de controle
   private var selectedButtons: List[Button] = Nil
 
-  // Define a cor de fundo para os botões selecionados
+  // Cor de fundo para os botões selecionados
   private val selectedButtonColor = Color.DARKORANGE
 
   // Método para tratamento de cliques nos botões da grade
   def handleButtonClick(event: ActionEvent): Unit = {
-    val clickedButton: Button = event.getSource.asInstanceOf[Button] // Obtém o botão clicado
-    val row: Int = GridPane.getRowIndex(clickedButton) // Obtém a linha do botão
-    val col: Int = GridPane.getColumnIndex(clickedButton) // Obtém a coluna do botão
+    val clickedButton: Button = event.getSource.asInstanceOf[Button]
+    val row: Int = GridPane.getRowIndex(clickedButton)
+    val col: Int = GridPane.getColumnIndex(clickedButton)
 
     val button = getButton(row, col)
-    if (button.isDisable) return
+    if (button.isDisable || selectedButtons.length >= 2) return // Retorna se o botão já estiver desativado ou se já houver dois botões selecionados
 
     button.setStyle("-fx-background-color: " + colorToHex(selectedButtonColor))
     selectedButtons = button :: selectedButtons
     button.setDisable(true)
+
+    if (selectedButtons.length == 2) {
+      // Desativa todos os botões
+      disableAllButtons()
+
+
+    }
   }
 
-  // Método para tratamento de cliques no botão "Play"
+  // Método para tratar cliques no botão "Play"
   def handlePlayButtonClick(): Unit = {
-
-    def play(board: Board, word: String): Unit = {
-      val file: String = "src/givenWords.txt"
-
-      // Extrai todas as palavras do ficheiro
-      val words = Source.fromFile(file).getLines().toList
-
-      // Verifica se as letras seleccionadas nos botões correspondem a alguma palavra no ficheiro
-      val wordFound = words.exists(documentWord => documentWord == selectedButtons.map(_.getText).mkString)
-
-
-      if (wordFound) {
-
-      
-
-      } else {
-
-        
-
-      }
-    }
-
-    selectedButtons.foreach { button =>
-
-      button.getStyleClass.add("btn-label")
-      button.setDisable(false) // Reativa o botão
-    }
+    // Realiza a pesquisa da palavra (a ser implementado)
+    // Após a pesquisa, reativa os botões e limpa a lista de botões selecionados
+    enableAllButtons()
     selectedButtons = Nil
   }
 
-  
+
+
+  // Método para desativar todos os botões
+  private def disableAllButtons(): Unit = {
+    selectedButtons.foreach { button =>
+      button.setDisable(true)
+    }
+  }
+
+  // Método para reativar todos os botões
+  private def enableAllButtons(): Unit = {
+    selectedButtons.foreach { button =>
+      button.setDisable(false)
+      button.setStyle("") // Remove o estilo de fundo
+    }
+  }
+
+
 
   private def getButton(row: Int, col: Int): Button = {
     val colIndex = col
@@ -114,34 +118,15 @@ class Controller {
 
   def fillButtonsRandomly(): Unit = {
 
-    initializeGameBoardWithWordsFromFile(board)
-    
-    val buttons = List(
-      List(btn00, btn01, btn02, btn03, btn04),
-      List(btn10, btn11, btn12, btn13, btn14),
-      List(btn20, btn21, btn22, btn23, btn24),
-      List(btn30, btn31, btn32, btn33, btn34),
-      List(btn40, btn41, btn42, btn43, btn44)
-    )
+
+
 
     
-    def fillButtons(board: Board, row: Int, col: Int): Unit = {
-      if (row < board.length) {
-        if (col < board(row).length) {
-          buttons(row)(col).setText(board(row)(col).toString)
-          fillButtons(board, row, col + 1)
-        } else {
-          fillButtons(board, row + 1, 0)
-        }
-      }
-    }
 
-    
-    fillButtons(board, 0, 0)
   }
 
 
   def initialize(): Unit = {
-    fillButtonsRandomly()
+
   }
 }

@@ -27,31 +27,31 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="btn00" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="0" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn01" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="0" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn02" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="0" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn03" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="0" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn04" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="0" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn10" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="1" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn11" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn12" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="1" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn13" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="1" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn14" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn20" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="2" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn21" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="2" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn22" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="2" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn23" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="2" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn24" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn30" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="3" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn31" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="3" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn32" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="3" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn33" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="3" ><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn00" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="0"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn01" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="0"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn02" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="0"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn03" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="0"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn04" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="0"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn10" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="1"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn11" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="1"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn12" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="1"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn13" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="1"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn14" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn20" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="2"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn21" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="2"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn22" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="2"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn23" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="2"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn24" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn30" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="3"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn31" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="3"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn32" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="3"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn33" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="3"><font><Font size="30.0" /></font></Button>
                         <Button fx:id="btn34" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="3"><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn40" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="4" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn41" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="4" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn42" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="4" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn43" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="4" ><font><Font size="30.0" /></font></Button>
-                        <Button fx:id="btn44" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4" ><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn40" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="0" GridPane.rowIndex="4"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn41" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="1" GridPane.rowIndex="4"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn42" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="2" GridPane.rowIndex="4"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn43" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="3" GridPane.rowIndex="4"><font><Font size="30.0" /></font></Button>
+                        <Button fx:id="btn44" alignment="CENTER" onAction="#handleButtonClick" prefHeight="58.0" prefWidth="70.0" styleClass="btn-label" text="x" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4"><font><Font size="30.0" /></font></Button>
 
 
 
@@ -60,28 +60,26 @@
                 </GridPane>
             </children>
         </Pane>
-        <Pane layoutX="499.0" layoutY="41.0" prefHeight="394.0" prefWidth="248.0">
-            <children>
-                <TableView fx:id="tableHistorico" layoutX="21.0" layoutY="40.0" prefHeight="340.0" prefWidth="206.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px;">
-                    <columns>
-                        <TableColumn fx:id="columnGame" prefWidth="64.0" text="Game" />
-                        <TableColumn fx:id="columnTries" prefWidth="71.0" text="Tries" />
-                        <TableColumn fx:id="columnFound" prefWidth="71.0" text="Found" />
-                    </columns>
-                </TableView>
-              <Label layoutX="80.0" layoutY="14.0" prefHeight="21.0" prefWidth="89.0" text="HISTÓRICO" textFill="white">
-                  <font>
-                      <Font name="System Bold" size="15.0" />
-                  </font>
-              </Label>
-            </children>
+        <Pane layoutX="499.0" layoutY="41.0" prefHeight="394.0" prefWidth="248.0" style="-fx-background-color: #34495E; -fx-background-radius: 10px; -fx-border-color: #2C3E50;">
+         <children>
+            <Label layoutX="95.0" layoutY="14.0" text="Regras" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Label graphicTextGap="3.0" layoutX="7.0" layoutY="52.0" prefHeight="324.0" prefWidth="234.0" text="Welcome to ZigZag!&#10;The rules are simple, find the hidden words.&#10;&#10;1 - Select the first letter of the word&#10;2 - Select the second letter of the word&#10; (to indicate the direction)&#10;3 - Write the word you want to find&#10;4 - Click the Play button&#10;&#10;SCORE: (Found * 50) / Tries&#10;&#10;To Quit, press the Quit button&#10;To Play a New Game, press the New Game button&#10;Good luck, have fun!&#10;&#10;&#10;&#10;&#10;" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </children>
         </Pane>
         <Label layoutX="19.0" layoutY="1.0" text="ZIG ZAG" textFill="ORANGE">
             <font>
                 <Font name="System Bold Italic" size="28.0" />
             </font>
         </Label>
-        <Button fx:id="btnPlay" onAction="#handlePlayButtonClick" layoutX="14.0" layoutY="454.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="456.0" styleClass="btn-orange" text="Play" textFill="WHITE">
+        <Button fx:id="btnPlay" layoutX="338.0" layoutY="454.0" mnemonicParsing="false" onAction="#handlePlayButtonClick" prefHeight="65.0" prefWidth="132.0" styleClass="btn-orange" text="Play" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
@@ -95,12 +93,43 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-        <Button fx:id="btnQuit" onAction="#handleQuitButtonClick" layoutX="639.0" layoutY="585.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="115.0" styleClass="btn-orange" text="Quit" textFill="WHITE">
+        <Button fx:id="btnQuit" layoutX="639.0" layoutY="585.0" mnemonicParsing="false" onAction="#handleQuitButtonClick" prefHeight="52.0" prefWidth="115.0" styleClass="btn-orange" text="Quit" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="17.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
+        <TextField fx:id="txtWord" layoutX="19.0" layoutY="467.0" prefHeight="40.0" prefWidth="296.0" promptText="Word" />
+      <Label layoutX="41.0" layoutY="570.0" text="Tries" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+        <Label layoutX="190.0" layoutY="570.0" prefHeight="21.0" prefWidth="52.0" text="Score" textFill="ORANGE">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+      <Label layoutX="107.0" layoutY="570.0" text="Found" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTries" layoutX="54.0" layoutY="603.0" text="X" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblFound" layoutX="125.0" layoutY="603.0" text="X" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblPontos" layoutX="208.0" layoutY="603.0" text="X" textFill="ORANGE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
