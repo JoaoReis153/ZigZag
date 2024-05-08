@@ -67,7 +67,7 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="7.0" layoutY="62.0" prefHeight="290.0" prefWidth="234.0" text="-----------------------------------------&#10;Welcome to ZigZag!&#10;The rules are simple, find the hidden words.&#10;1 - Select the first letter of the word&#10;2 - Select the second letter of the word&#10; (to indicate the direction)&#10;3 - Write the word you want to find&#10;4 - Click the Play button&#10;&#10;SCORE: (Found * 50) / Tries&#10;&#10;To Quit, press the Quit button&#10;To Play a New Game, press the New Game button&#10;Good luck, have fun!&#10;-----------------------------------------&#10;&#10;" textFill="WHITE" underline="true">
+            <Label graphicTextGap="3.0" layoutX="7.0" layoutY="52.0" prefHeight="324.0" prefWidth="234.0" text="Welcome to ZigZag!&#10;The rules are simple, find the hidden words.&#10;&#10;1 - Select the first letter of the word&#10;2 - Select the second letter of the word&#10; (to indicate the direction)&#10;3 - Write the word you want to find&#10;4 - Click the Play button&#10;&#10;SCORE: (Found * 50) / Tries&#10;&#10;To Quit, press the Quit button&#10;To Play a New Game, press the New Game button&#10;Good luck, have fun!&#10;&#10;&#10;&#10;&#10;" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -106,7 +106,7 @@
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
-        <Label layoutX="186.0" layoutY="570.0" prefHeight="21.0" prefWidth="52.0" text="Pontos" textFill="ORANGE">
+        <Label layoutX="190.0" layoutY="570.0" prefHeight="21.0" prefWidth="52.0" text="Score" textFill="ORANGE">
             <font>
                 <Font name="System Bold" size="15.0" />
             </font>
