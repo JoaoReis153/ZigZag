@@ -47,6 +47,25 @@ object ZigZagUtils {
         case _ => NorthWest
       }
     }
+
+    // Calcula a direção entre duas coordenadas e lança um erro se estiverem mais distantes do que um quadrado
+    def calculateDirection(startCoord: Coord2D, endCoord: Coord2D): Direction.Value = {
+      val deltaX = endCoord._2 - startCoord._2
+      val deltaY = endCoord._1 - startCoord._1
+
+      if (math.abs(deltaX) > 1 || math.abs(deltaY) > 1)
+        throw new IllegalArgumentException("Coordinates are more than one square away.")
+
+      if (deltaX == 0 && deltaY == -1) North
+      else if (deltaX == 1 && deltaY == -1) NorthEast
+      else if (deltaX == 1 && deltaY == 0) East
+      else if (deltaX == 1 && deltaY == 1) SouthEast
+      else if (deltaX == 0 && deltaY == 1) South
+      else if (deltaX == -1 && deltaY == 1) SouthWest
+      else if (deltaX == -1 && deltaY == 0) West
+      else if (deltaX == -1 && deltaY == -1) NorthWest
+      else throw new IllegalArgumentException("Invalid coordinates.")
+    }
   }
 
   private def isValidCoord(board: Board, coord: Coord2D): Boolean =
@@ -167,6 +186,11 @@ object ZigZagUtils {
         (true, getWordPositions(word))
     } else (false, Nil)
 
+  }
+
+
+  def playGUI(board: Board, word: String, start: Coord2D, secondCoordinate: Coord2D): (Boolean, List[Coord2D]) = {
+    play(board, word, start, Direction.calculateDirection(start, secondCoordinate))
   }
 
 // Joga a palavra, na posição inicial, segundo a direção dada
