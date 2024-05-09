@@ -1,5 +1,5 @@
 import ZigZag.{initialBoard, initialRandom}
-import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
+import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, playGUI, randomChar}
 import javafx.scene.paint.Color
 import javafx.scene.control.{Button, TextField}
 import javafx.fxml.FXML
@@ -8,9 +8,12 @@ import javafx.event.ActionEvent
 import javafx.application
 import javafx.application.Platform
 
+// Estrutura para armazenar as coordenadas de cada botão
+case class Coord2D(row: Int, col: Int)
 
 class Controller {
 
+  @FXML private var gridBoard: GridPane = _
   // Referência ao TextField
   var txtWord: TextField = _
 
@@ -52,30 +55,40 @@ class Controller {
     val row: Int = GridPane.getRowIndex(clickedButton)
     val col: Int = GridPane.getColumnIndex(clickedButton)
 
+    val buttonCoord = Coord2D(row, col) // Coordenadas do botão clicado
+
     val button = getButton(row, col)
-    if (button.isDisable || selectedButtons.length >= 2) return // Retorna se o botão já estiver desativado ou se já houver dois botões selecionados
+    if (button.isDisable || selectedButtons.length >= 2) return
 
     button.setStyle("-fx-background-color: " + colorToHex(selectedButtonColor))
-    selectedButtons = button :: selectedButtons
+    selectedButtons = buttonCoord :: selectedButtons // Armazena as coordenadas
     button.setDisable(true)
 
     if (selectedButtons.length == 2) {
       // Desativa todos os botões
       disableAllButtons()
-
-
     }
+
   }
+
 
   // Método para tratar cliques no botão "Play"
   def handlePlayButtonClick(): Unit = {
-    // Realiza a pesquisa da palavra (a ser implementado)
-    // Após a pesquisa, reativa os botões e limpa a lista de botões selecionados
-    enableAllButtons()
-    selectedButtons = Nil
+
+      // Coordenadas dos botões selecionados
+      val start = selectedButtons.head
+      val secondCoordinate = selectedButtons.tail.head
+
+      // Chama playGUI com as coordenadas
+      playGUI(initialBoard, txtWord.getText, start, secondCoordinate)
+
+      // Reativa os botões e limpa a lista de botões selecionados
+      enableAllButtons()
+      selectedButtons = Nil
+
+    
+
   }
-
-
 
   // Método para desativar todos os botões
   private def disableAllButtons(): Unit = {
@@ -126,7 +139,5 @@ class Controller {
   }
 
 
-  def initialize(): Unit = {
 
-  }
 }
