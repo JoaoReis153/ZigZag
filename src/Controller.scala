@@ -1,5 +1,5 @@
 import ZigZag.{initialBoard, initialRandom}
-import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, playGUI, randomChar}
+import ZigZagUtils.{Board, Coord2D, completeBoardRandomly, initializeGameBoardWithWordsFromFile, playGUI, randomChar}
 import javafx.scene.paint.Color
 import javafx.scene.control.{Button, TextField}
 import javafx.fxml.FXML
@@ -8,12 +8,13 @@ import javafx.event.ActionEvent
 import javafx.application
 import javafx.application.Platform
 
-// Estrutura para armazenar as coordenadas de cada botão
-case class Coord2D(row: Int, col: Int)
 
 class Controller {
 
+  private var board: Board = initialBoard
+  
   @FXML private var gridBoard: GridPane = _
+  
   // Referência ao TextField
   var txtWord: TextField = _
 
@@ -45,6 +46,7 @@ class Controller {
 
   // Variáveis de controle
   private var selectedButtons: List[Button] = Nil
+  private var selectedButtonsCoord: List[Coord2D] = Nil
 
   // Cor de fundo para os botões selecionados
   private val selectedButtonColor = Color.DARKORANGE
@@ -55,13 +57,14 @@ class Controller {
     val row: Int = GridPane.getRowIndex(clickedButton)
     val col: Int = GridPane.getColumnIndex(clickedButton)
 
-    val buttonCoord = Coord2D(row, col) // Coordenadas do botão clicado
+    val buttonCoord : Coord2D = (row, col) // Coordenadas do botão clicado
 
     val button = getButton(row, col)
     if (button.isDisable || selectedButtons.length >= 2) return
 
     button.setStyle("-fx-background-color: " + colorToHex(selectedButtonColor))
-    selectedButtons = buttonCoord :: selectedButtons // Armazena as coordenadas
+    selectedButtons = clickedButton :: selectedButtons // Armazena os botões seleccionados
+    selectedButtonsCoord = buttonCoord :: selectedButtonsCoord // Armazena as coordenadas dos botões
     button.setDisable(true)
 
     if (selectedButtons.length == 2) {
@@ -76,15 +79,16 @@ class Controller {
   def handlePlayButtonClick(): Unit = {
 
       // Coordenadas dos botões selecionados
-      val start = selectedButtons.head
-      val secondCoordinate = selectedButtons.tail.head
+      val start = selectedButtonsCoord.head
+      val secondCoordinate = selectedButtonsCoord.tail.head
 
       // Chama playGUI com as coordenadas
-      playGUI(initialBoard, txtWord.getText, start, secondCoordinate)
+      playGUI(board, txtWord.getText, start, secondCoordinate)
 
       // Reativa os botões e limpa a lista de botões selecionados
       enableAllButtons()
       selectedButtons = Nil
+      selectedButtonsCoord = Nil
 
     
 
@@ -130,14 +134,19 @@ class Controller {
   }
 
   def fillButtonsRandomly(): Unit = {
+    
+    // Preenche o board do tipo da TUI com as palavras no ficheiro
+    initializeGameBoardWithWordsFromFile(board)
 
-
-
-
+   // Itera o board da TUI e atribui a cada botão da GUI a letra correspondente ao ficheiro
+    for (row <- 0 until board.size; col <- 0 until board(row).size) {
+    
+      val button = getButton(row, col)
+      button.setText(board(row)(col).toString)
+      
+    }
     
 
   }
-
-
 
 }

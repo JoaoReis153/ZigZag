@@ -7,9 +7,9 @@ case class GameState(numTries: Int, numFound: Int, board: Board, greenCoordinate
 
 object ZigZag extends App {
 
-  private val initialBoard: Board = List.fill(5)(List.fill(5)('.'))
+  val initialBoard: Board = List.fill(5)(List.fill(5)('.'))
 
-  private val initialRandom: MyRandom = ZigZagUtils.readRandomFromFile();
+  val initialRandom: MyRandom = ZigZagUtils.readRandomFromFile();
 
   private val  (filledRandomBoard, updatedRandom) = completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
   private val filledBoard = initializeGameBoardWithWordsFromFile(filledRandomBoard)
