@@ -52,6 +52,15 @@ class Controller {
 
   private val selectedButtonColor = Color.DARKORANGE
 
+  private def disableButtonsForWord(wordCoordinates: List[Coord2D]): Unit = {
+    wordCoordinates.foreach { coord =>
+      val (row, col) = coord
+      val button = getButton(row, col)
+      button.setDisable(true)
+    }
+  }
+
+
   def handleButtonClick(event: ActionEvent): Unit = {
     val clickedButton: Button = event.getSource.asInstanceOf[Button]
     val row: Int = GridPane.getRowIndex(clickedButton)
@@ -79,7 +88,7 @@ class Controller {
 
     // Chama playGUI com as coordenadas e verifica se a palavra foi encontrada
     val (wordFound, _) = playGUI(board, txtWord.getText, start, secondCoordinate)
-
+    val (_,wordCoordinates) = playGUI(board, txtWord.getText, start, secondCoordinate)
     // Reativa os botões e limpa a lista de botões selecionados
     enableAllButtons(selectedButtons)
     selectedButtons = Nil
@@ -96,8 +105,9 @@ class Controller {
       lblFound.setText((currentFound + 1).toString)
 
       val score = calculateScore(currentFound + 1,currentTries + 1)
-
       lblPontos.setText(score.toString)
+
+      disableButtonsForWord(wordCoordinates) // Desativa os botões que formam a palavra
     }
   }
 
