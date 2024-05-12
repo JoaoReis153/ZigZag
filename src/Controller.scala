@@ -1,18 +1,24 @@
 import ZigZag.{initialBoard, initialRandom}
-import ZigZagUtils.{Board, completeBoardRandomly, initializeGameBoardWithWordsFromFile, randomChar}
+import ZigZagUtils.{Board, Coord2D, completeBoardRandomly, initializeGameBoardWithWordsFromFile, playGUI, randomChar}
 import javafx.scene.paint.Color
-import javafx.scene.control.{Button, TextField}
+import javafx.scene.control.{Button, Label, TextField}
 import javafx.fxml.FXML
 import javafx.scene.layout.GridPane
 import javafx.event.ActionEvent
 import javafx.application
 import javafx.application.Platform
 
-
 class Controller {
+  @FXML private var gridBoard: GridPane = _
+  private val initialBoard: Board = List.fill(5)(List.fill(5)('.')) // Tabuleiro inicial vazio
+  private val initialRandom: MyRandom = ZigZagUtils.readRandomFromFile() // Carregando a semente aleatória inicial
+  private var board: Board = _
 
-  // Referência ao TextField
-  var txtWord: TextField = _
+
+  @FXML private var lblTries: Label = _
+  @FXML private var lblFound: Label = _
+
+  @FXML var txtWord: TextField = _
 
   @FXML private var btn00: Button = _
   @FXML private var btn01: Button = _
@@ -40,70 +46,89 @@ class Controller {
   @FXML private var btn43: Button = _
   @FXML private var btn44: Button = _
 
-  // Variáveis de controle
   private var selectedButtons: List[Button] = Nil
+  private var selectedButtonsCoord: List[Coord2D] = Nil
 
-  // Cor de fundo para os botões selecionados
   private val selectedButtonColor = Color.DARKORANGE
 
-  // Método para tratamento de cliques nos botões da grade
   def handleButtonClick(event: ActionEvent): Unit = {
     val clickedButton: Button = event.getSource.asInstanceOf[Button]
     val row: Int = GridPane.getRowIndex(clickedButton)
     val col: Int = GridPane.getColumnIndex(clickedButton)
 
+    val buttonCoord : Coord2D = (row, col)
+
     val button = getButton(row, col)
-    if (button.isDisable || selectedButtons.length >= 2) return // Retorna se o botão já estiver desativado ou se já houver dois botões selecionados
+    if (button.isDisable || selectedButtons.length >= 2) return
 
     button.setStyle("-fx-background-color: " + colorToHex(selectedButtonColor))
-    selectedButtons = button :: selectedButtons
+    selectedButtons = clickedButton :: selectedButtons
+    selectedButtonsCoord = buttonCoord :: selectedButtonsCoord
     button.setDisable(true)
 
     if (selectedButtons.length == 2) {
-      // Desativa todos os botões
-      disableAllButtons()
-
-
+      disableAllButtons(selectedButtons)
     }
   }
 
-  // Método para tratar cliques no botão "Play"
   def handlePlayButtonClick(): Unit = {
-    // Realiza a pesquisa da palavra (a ser implementado)
-    // Após a pesquisa, reativa os botões e limpa a lista de botões selecionados
-    enableAllButtons()
+    // Coordenadas dos botões selecionados
+    val start = selectedButtonsCoord.head
+    val secondCoordinate = selectedButtonsCoord.tail.head
+
+    // Chama playGUI com as coordenadas e verifica se a palavra foi encontrada
+    val (wordFound, _) = playGUI(initialBoard, txtWord.getText, start, secondCoordinate)
+
+    // Reativa os botões e limpa a lista de botões selecionados
+    enableAllButtons(selectedButtons)
     selectedButtons = Nil
-  }
+    selectedButtonsCoord = Nil
 
+    // Incrementa o número de tentativas
+    val currentTries = lblTries.getText.toInt
+    lblTries.setText((currentTries + 1).toString)
 
+    // Se uma palavra for encontrada, incrementa o número de palavras encontradas
 
-  // Método para desativar todos os botões
-  private def disableAllButtons(): Unit = {
-    selectedButtons.foreach { button =>
-      button.setDisable(true)
+    if (wordFound) {
+      val currentFound = lblFound.getText.toInt
+      lblFound.setText((currentFound + 1).toString)
     }
   }
 
-  // Método para reativar todos os botões
-  private def enableAllButtons(): Unit = {
-    selectedButtons.foreach { button =>
-      button.setDisable(false)
-      button.setStyle("") // Remove o estilo de fundo
-    }
+  def handleButtonNewGameClick(): Unit = {
+    // Incrementa a semente do arquivo de texto
+    val updatedRandom = MyRandom(System.currentTimeMillis())
+    ZigZagUtils.writeRandomInFile(updatedRandom)
+
+    // Reinicia o tabuleiro com letras aleatórias usando a nova semente
+    val (randomBoard, _) = ZigZagUtils.completeBoardRandomly(initialBoard, updatedRandom, ZigZagUtils.randomChar)
+
+    // Atualiza o tabuleiro com as palavras do arquivo de texto
+    board = ZigZagUtils.initializeGameBoardWithWordsFromFile(randomBoard)
+
+    // Preenche novamente os botões da grade com os caracteres do tabuleiro atualizado
+    fillButtonsWithBoard(board)
+
+    // Define o número de tentativas como 0
+    lblTries.setText("0")
   }
 
-
-
-  private def getButton(row: Int, col: Int): Button = {
-    val colIndex = col
-    val rowIndex = row
-    val buttonId = s"btn$rowIndex$colIndex"
-    val field = getClass.getDeclaredField(buttonId)
-    field.setAccessible(true)
-    field.get(this).asInstanceOf[Button]
+  private def disableAllButtons(buttons: List[Button]): Unit = buttons match {
+    case Nil => // Caso base: lista vazia, não há mais botões para desativar
+    case button :: rest =>
+      button.setDisable(true) // Desativa o botão atual
+      disableAllButtons(rest) // Chama recursivamente a função para os botões restantes
   }
 
-  // Converte um objeto Color para uma string hexadecimal
+  private def enableAllButtons(buttons: List[Button]): Unit = buttons match {
+    case Nil => // Caso base: lista vazia, não há mais botões para ativar
+    case button :: rest =>
+      button.setDisable(false) // Ativa o botão atual
+      button.setStyle("") // Remove qualquer estilo aplicado ao botão
+      enableAllButtons(rest) // Chama recursivamente a função para os botões restantes
+  }
+
   private def colorToHex(color: Color): String = {
     val red = (color.getRed * 255).toInt
     val green = (color.getGreen * 255).toInt
@@ -111,22 +136,52 @@ class Controller {
     f"#$red%02X$green%02X$blue%02X"
   }
 
-
   def handleQuitButtonClick(): Unit = {
     Platform.exit()
   }
 
-  def fillButtonsRandomly(): Unit = {
+  def initialize(): Unit = {
+    // Inicializa o tabuleiro com letras aleatórias
+    val (randomBoard, updatedRandom) = ZigZagUtils.completeBoardRandomly(initialBoard, initialRandom, ZigZagUtils.randomChar)
 
+    // Preencher os botões da grade com os caracteres do tabuleiro aleatório
+    fillButtonsWithBoard(randomBoard)
 
+    // Atualizar o tabuleiro com as palavras do arquivo de texto
+    board = ZigZagUtils.initializeGameBoardWithWordsFromFile(randomBoard)
 
-
-    
-
+    // Preencher novamente os botões da grade com os caracteres do tabuleiro atualizado
+    fillButtonsWithBoard(board)
   }
 
 
-  def initialize(): Unit = {
 
+  private def fillButtonsWithBoard(board: Board, row: Int = 0, col: Int = 0): Unit = {
+    if (row < gridBoard.getRowCount) {
+      if (col < gridBoard.getColumnCount) {
+        val button = getButton(row, col)
+        val letter = getOneCell(board, (row, col))
+        if (letter != '.') { // Verifica se o caractere não é '.' antes de definir o texto do botão
+          button.setText(letter.toString)
+        }
+        fillButtonsWithBoard(board, row, col + 1) // Chama recursivamente para a próxima coluna
+      } else {
+        fillButtonsWithBoard(board, row + 1, 0) // Passa para a próxima linha e reinicia a contagem de coluna
+      }
+    }
+  }
+
+  private def getButton(row: Int, col: Int): Button = {
+    val children = gridBoard.getChildren
+    children.get(row * gridBoard.getColumnCount + col).asInstanceOf[Button]
+  }
+
+  private def getOneCell(board: Board, coord: Coord2D): Char = {
+    val (x, y) = coord
+    if (x >= 0 && x < board.length && y >= 0 && y < board(x).length) {
+      board(x)(y)
+    } else {
+      '.'
+    }
   }
 }
