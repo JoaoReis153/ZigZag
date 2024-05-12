@@ -186,11 +186,6 @@ object ZigZagUtils {
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): (Boolean, List[Coord2D]) = {
 
     val newCoord = Direction.nextCoord(start, direction)
-    println("checkCoordd "+ checkCoord(newCoord, board))
-    println("Geton cell "  + getOneCell(board, start) == word.head)
-    println("Get second cell " + getOneCell(board, newCoord) == word.tail.head)
-    println("Check word in board " +checkWordInBoard(board, word, start))
-    println("Search close coordinates " + searchCloseCoordinates(board, word.tail, newCoord, List()))
     if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head && checkWordInBoard(board, word, start) && searchCloseCoordinates(board, word.tail, newCoord, List())) {
         (true, getWordPositions(word))
     }
