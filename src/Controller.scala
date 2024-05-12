@@ -78,6 +78,7 @@ class Controller {
 
     // Chama playGUI com as coordenadas e verifica se a palavra foi encontrada
     val (wordFound, _) = playGUI(initialBoard, txtWord.getText, start, secondCoordinate)
+    print(playGUI(initialBoard, txtWord.getText, start, secondCoordinate))
 
     // Reativa os botões e limpa a lista de botões selecionados
     enableAllButtons(selectedButtons)
