@@ -3,6 +3,7 @@ import scala.io.StdIn.readLine
 import scala.io.Source
 import scala.util.matching.Regex
 import java.io._
+import scala.collection.immutable.List
 
 object ZigZagUtils {
 
@@ -170,7 +171,7 @@ object ZigZagUtils {
   }
 
   def getWordPositions(word: String): List[Coord2D] = {
-    val (words, positions) = readWordsAndCoordinatesFromFile()
+    val (words, positions) = giveRandomWords()
     def getWordPositionsAux(wordsList: List[String], coordsList: List[List[Coord2D]], word: String): List[Coord2D] = (wordsList, coordsList) match {
       case (Nil, Nil) => List()
       case (x :: xs, y :: ys) =>
@@ -197,7 +198,7 @@ object ZigZagUtils {
   private def checkWordInBoard(board: Board, word: String, start: Coord2D): Boolean = {
 
     // Extrai todas as palavras e respetivas posições do ficheiro
-    val (words, positions) = readWordsAndCoordinatesFromFile()
+    val (words, positions) = giveRandomWords()
 
     // Procura a palavra jogada nas palavras extraidas do ficheiro
     // Quando encontrar chama a função "checkWordIsInBoard"
@@ -230,7 +231,7 @@ object ZigZagUtils {
 
 
   private def checkBoard(board: Board):Boolean = {
-    val (words, positions) = readWordsAndCoordinatesFromFile()
+    val (words, positions) = giveRandomWords()
 
     @tailrec
     def checkWords(board: Board, wordsList: List[String], coordsList: List[List[Coord2D]]): Boolean = (wordsList, coordsList) match {
@@ -299,6 +300,28 @@ object ZigZagUtils {
     pw.close()
   }
 
+  private def giveRandomWords(): (List[String], List[List[Coord2D]]) = {
+    val (words, positions) = readWordsAndCoordinatesFromFile()
+
+    // Combine as palavras com suas posições
+    val wordPositions = words.zip(positions)
+
+    // Embaralhe a lista de palavras e posições
+    val random = readRandomFromFile()
+    val shuffledWordPositions = random.shuffle(wordPositions)
+
+    // Selecione as primeiras x coordenadas e posições aleatórias
+    val x = 2 // Defina o número de coordenadas e posições aleatórias desejadas
+    val randomWordPositions = shuffledWordPositions.take(x)
+
+    // Agora você tem uma lista de x coordenadas e posições selecionadas aleatoriamente
+
+    // Separe novamente as palavras e as posições
+    val (randomWords, randomPositions) = randomWordPositions.unzip
+
+    // Retorne as palavras e as posições aleatórias
+    (randomWords, randomPositions)
+  }
 
   // Extrai as palavras e respetivas coordenadas do ficheiro
   private def readWordsAndCoordinatesFromFile(): (List[String], List[List[Coord2D]]) = {
@@ -345,7 +368,7 @@ object ZigZagUtils {
 
   // Inicializa o tabuleiro com as palavras do ficheiro
   def initializeGameBoardWithWordsFromFile(board: Board): Board = {
-    val (words, positions) = readWordsAndCoordinatesFromFile()
+    val (words, positions) = giveRandomWords()
     val newBoard = setBoardWithWords(board, words, positions)
     if(!checkBoard(newBoard))
       throw new IllegalArgumentException("Board wrongly formated, it may just be bad luck.")
