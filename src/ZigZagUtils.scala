@@ -169,8 +169,10 @@ object ZigZagUtils {
     }
   }
 
-  def getWordPositions(word: String): List[Coord2D] = {
+  private def getWordPositions(word: String): List[Coord2D] = {
     val (words, positions) = readWordsAndCoordinatesFromFile()
+
+    @tailrec
     def getWordPositionsAux(wordsList: List[String], coordsList: List[List[Coord2D]], word: String): List[Coord2D] = (wordsList, coordsList) match {
       case (Nil, Nil) => List()
       case (x :: xs, y :: ys) =>
@@ -182,7 +184,7 @@ object ZigZagUtils {
 
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): (Boolean, List[Coord2D]) = {
     val newCoord = Direction.nextCoord(start, direction)
-    if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head && searchCloseCoordinates(board, word.tail, newCoord, List())) {
+    if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head && checkWordInBoard(board, word, start) && searchCloseCoordinates(board, word.tail, newCoord, List())) {
         (true, getWordPositions(word))
     } else (false, Nil)
 
@@ -206,7 +208,8 @@ object ZigZagUtils {
       case Nil => false
       case x :: xs =>
         if (x == wordAnswer) {
-          checkLettersInBoard(board, x, coordsList.head)
+          if(!checkLettersInBoard(board, x, coordsList.head)) throw new IllegalArgumentException("As letras da palavra " + x + " não estão nas posições correspondentes.")
+          else true
         } else {
           searchForTheGivenWordInTheList(board, xs, coordsList.tail, coordAnswer, wordAnswer)
         }
@@ -218,7 +221,7 @@ object ZigZagUtils {
       case Nil => true
       case x :: xs =>
         if (wordAnswer.head != getOneCell(board, (x._1,x._2))) {
-          false
+          throw new IllegalArgumentException("A letra _" + wordAnswer.head+ "_ da palavra " + word + " foi sobreposta na posição (" + x + " ")
         } else {
           checkLettersInBoard(board, wordAnswer.tail, xs)
         }
@@ -230,6 +233,7 @@ object ZigZagUtils {
 
 
   private def checkBoard(board: Board):Boolean = {
+    printBoard(board, List())
     val (words, positions) = readWordsAndCoordinatesFromFile()
 
     @tailrec
@@ -274,7 +278,7 @@ object ZigZagUtils {
       case x :: xs =>
         val counter = processBoard(board, x)
         if (counter > 1) {
-          false
+          throw new IllegalArgumentException("Palavra " + x + " duplicada " + counter + " vezes")
         } else {
           checkNoDuplicates(board, xs)
         }
@@ -364,34 +368,33 @@ object ZigZagUtils {
 
 
   def printGameState(gameState: GameState): Unit = {
-    println(s"\nNumber of Tries: ${gameState.numTries}")
-    println(s"Number of Found Words: ${gameState.numFound}")
+    println(s"\nTries: ${gameState.numTries}")
+    println(s"Found: ${gameState.numFound}\n")
 
     // Helper function to determine if a coordinate should be colored green
-    def isGreenCoord(x: Int, y: Int, greenCoords: List[Coord2D]): Boolean = {
-      greenCoords.contains((x, y))
-    }
-
-
-    @tailrec
-    def printBoard(board: Board, greenCoords: List[Coord2D], currentRow: Int = 0): Unit = board match {
-      case Nil =>
-      case head :: tail =>
-        head.zipWithIndex.foreach {
-          case (char, colIndex) =>
-            if (isGreenCoord(currentRow, colIndex, greenCoords)) {
-              print(s"\u001B[32m$char\u001B[0m ")
-            } else {
-              print(s"$char ")
-            }
-        }
-        println()
-        printBoard(tail, greenCoords, currentRow + 1)
-    }
-
-
     printBoard(gameState.board, gameState.greenCoordinates)
   }
+
+  def isGreenCoord(x: Int, y: Int, greenCoords: List[Coord2D]): Boolean = {
+    greenCoords.contains((x, y))
+  }
+
+  @tailrec
+  def printBoard(board: Board, greenCoords: List[Coord2D], currentRow: Int = 0): Unit = board match {
+    case Nil =>
+    case head :: tail =>
+      head.zipWithIndex.foreach {
+        case (char, colIndex) =>
+          if (isGreenCoord(currentRow, colIndex, greenCoords)) {
+            print(s"\u001B[32m$char\u001B[0m ")
+          } else {
+            print(s"$char ")
+          }
+      }
+      println()
+      printBoard(tail, greenCoords, currentRow + 1)
+  }
+
 
   private def printGameStateList(lst: List[GameState]): String = {
     lst match {
