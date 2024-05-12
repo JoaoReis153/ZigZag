@@ -17,6 +17,7 @@ class Controller {
 
   @FXML private var lblTries: Label = _
   @FXML private var lblFound: Label = _
+  @FXML private var lblPontos: Label = _
 
   @FXML var txtWord: TextField = _
 
@@ -56,7 +57,7 @@ class Controller {
     val row: Int = GridPane.getRowIndex(clickedButton)
     val col: Int = GridPane.getColumnIndex(clickedButton)
 
-    val buttonCoord : Coord2D = (row, col)
+    val buttonCoord : Coord2D = (col, row)
 
     val button = getButton(row, col)
     if (button.isDisable || selectedButtons.length >= 2) return
@@ -73,11 +74,11 @@ class Controller {
 
   def handlePlayButtonClick(): Unit = {
     // Coordenadas dos botões selecionados
-    val start = selectedButtonsCoord.head
-    val secondCoordinate = selectedButtonsCoord.tail.head
+    val start = selectedButtonsCoord.tail.head
+    val secondCoordinate = selectedButtonsCoord.head
 
     // Chama playGUI com as coordenadas e verifica se a palavra foi encontrada
-    val (wordFound, _) = playGUI(initialBoard, txtWord.getText, start, secondCoordinate)
+    val (wordFound, _) = playGUI(board, txtWord.getText, start, secondCoordinate)
 
     // Reativa os botões e limpa a lista de botões selecionados
     enableAllButtons(selectedButtons)
@@ -93,7 +94,18 @@ class Controller {
     if (wordFound) {
       val currentFound = lblFound.getText.toInt
       lblFound.setText((currentFound + 1).toString)
+
+      val score = calculateScore(currentFound + 1,currentTries + 1)
+
+      lblPontos.setText(score.toString)
     }
+  }
+
+  def calculateScore(found: Int, tries: Int): Int = {
+    if (found == 0)
+      throw new IllegalArgumentException("Cannot divide by zero.")
+    else
+      (found * 50) / tries
   }
 
   def handleButtonNewGameClick(): Unit = {
@@ -112,6 +124,8 @@ class Controller {
 
     // Define o número de tentativas como 0
     lblTries.setText("0")
+    lblFound.setText("0")
+    lblPontos.setText("0")
   }
 
   private def disableAllButtons(buttons: List[Button]): Unit = buttons match {

@@ -44,7 +44,8 @@ object ZigZagUtils {
         case "south" => South
         case "southwest" => SouthWest
         case "west" => West
-        case _ => NorthWest
+        case "northwest" => NorthWest
+        case _ => throw new IllegalArgumentException("Invalid direction")
       }
     }
 
@@ -56,14 +57,14 @@ object ZigZagUtils {
       if (math.abs(deltaX) > 1 || math.abs(deltaY) > 1)
         throw new IllegalArgumentException("Coordinates are more than one square away.")
 
-      if (deltaX == 0 && deltaY == -1) North
-      else if (deltaX == 1 && deltaY == -1) NorthEast
-      else if (deltaX == 1 && deltaY == 0) East
-      else if (deltaX == 1 && deltaY == 1) SouthEast
-      else if (deltaX == 0 && deltaY == 1) South
-      else if (deltaX == -1 && deltaY == 1) SouthWest
-      else if (deltaX == -1 && deltaY == 0) West
-      else if (deltaX == -1 && deltaY == -1) NorthWest
+      if (deltaY == -1 && deltaX == 0) Direction.West
+      else if (deltaY == -1 && deltaX == 1) Direction.SouthWest
+      else if (deltaY == 0 && deltaX == 1) Direction.South
+      else if (deltaY == 1 && deltaX == 1) Direction.SouthEast
+      else if (deltaY == 1 && deltaX == 0) Direction.East
+      else if (deltaY == 1 && deltaX == -1) Direction.NorthEast
+      else if (deltaY == 0 && deltaX == -1) Direction.North
+      else if (deltaY == -1 && deltaX == -1) Direction.NorthWest
       else throw new IllegalArgumentException("Invalid coordinates.")
     }
   }
@@ -183,6 +184,7 @@ object ZigZagUtils {
   }
 
   def play(board: Board, word: String, start: Coord2D, direction: Direction.Value): (Boolean, List[Coord2D]) = {
+
     val newCoord = Direction.nextCoord(start, direction)
     if(checkCoord(newCoord, board) && getOneCell(board, start) == word.head && getOneCell(board, newCoord) == word.tail.head && checkWordInBoard(board, word, start) && searchCloseCoordinates(board, word.tail, newCoord, List())) {
         (true, getWordPositions(word))
@@ -192,7 +194,8 @@ object ZigZagUtils {
 
 
   def playGUI(board: Board, word: String, start: Coord2D, secondCoordinate: Coord2D): (Boolean, List[Coord2D]) = {
-    play(board, word, start, Direction.calculateDirection(start, secondCoordinate))
+
+    play(board, word.toUpperCase, start.swap, Direction.calculateDirection(start, secondCoordinate))
   }
 
 // Joga a palavra, na posição inicial, segundo a direção dada
