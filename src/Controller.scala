@@ -107,7 +107,7 @@ class Controller {
       val score = calculateScore(currentFound + 1,currentTries + 1)
       lblPontos.setText(score.toString)
 
-      disableButtonsForWord(wordCoordinates) // Desativa os botões que formam a palavra
+     // disableButtonsForWord(wordCoordinates) // Desativa os botões que formam a palavra
     }
   }
 
@@ -136,6 +136,10 @@ class Controller {
     lblTries.setText("0")
     lblFound.setText("0")
     lblPontos.setText("0")
+    enableAllButtons(selectedButtons)
+    selectedButtons = Nil
+    selectedButtonsCoord = Nil
+
   }
 
   private def disableAllButtons(buttons: List[Button]): Unit = buttons match {
