@@ -11,6 +11,7 @@ A 5×5 word search game in Scala. Find hidden words by guessing the word, starti
 
 ```bash
 make run   # terminal UI
+make gui   # graphical UI
 ```
 
 Must be run from the project root so `src/givenWords.txt` is found.
