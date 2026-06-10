@@ -1,11 +1,11 @@
-SOURCES = src/MyRandom.scala src/ZigZagUtils.scala src/ZigZag.scala
-OUT = out
+TUI_SOURCES = src/MyRandom.scala src/ZigZagUtils.scala src/ZigZag.scala
+TUI_JAR     = out/zigzag.jar
 
 build:
-	mkdir -p $(OUT)
-	scalac $(SOURCES) -d $(OUT)
+	mkdir -p out
+	scala --power package $(TUI_SOURCES) --standalone --main-class ZigZag -o $(TUI_JAR) -f
 
-run:
-	scala run $(SOURCES)
+run: build
+	exec java -jar $(TUI_JAR)
 
 .PHONY: build run

@@ -6,6 +6,8 @@ import scala.util.matching.Regex
 object ZigZagUtils {
 
   type Board = List[List[Char]]
+
+  case class GameState(numTries: Int, numFound: Int, board: Board, foundWords: Set[String] = Set.empty)
   private type Coord2D = (Int, Int) //(linha, coluna)
 
   // Direções possíveis
@@ -193,6 +195,8 @@ object ZigZagUtils {
   // O resto das funções apenas mostram frases do ecrã e são auto-explicativas
 
 
+
+  def getWordList(): List[String] = readFromFile("src/givenWords.txt")._1
 
   def showPrompt(): Unit = {
     print("\nGuess a word: ")

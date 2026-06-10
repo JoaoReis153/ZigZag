@@ -1,9 +1,8 @@
 
-import ZigZagUtils.{Board, Direction, completeBoardRandomly, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt}
+import ZigZagUtils.{Board, Direction, GameState, completeBoardRandomly, getWordList, getUserInput, initializeGameBoardWithWordsFromFile, play, printGameOver, printGameState, printGameStateList, printNewGame, printRules, randomChar, showPrompt}
 
 import scala.annotation.tailrec
 
-case class GameState(numTries: Int, numFound: Int, board: Board)
 
 object ZigZag extends App {
 
@@ -45,31 +44,54 @@ object ZigZag extends App {
         mainLoop(gameState, random)
 
       case _ =>
-        var found: Int = gameState.numFound
-        var tries : Int = gameState.numTries
-        try {
+        val totalWords = getWordList().length
+
+        val nextState: Option[GameState] = try {
           print("x: ")
           val x = getUserInput.toInt
           print("y: ")
           val y = getUserInput.toInt
-          print("\nDirection: (north,  northeast, east, southeast, south, southwest, west, northwest\n")
+          print("\nDirection: (north, northeast, east, southeast, south, southwest, west, northwest)\n")
           val directionStr = getUserInput.toUpperCase
           Direction.stringToDirection(directionStr) match {
             case Some(direction) =>
-              tries = tries + 1
+              val newTries = gameState.numTries + 1
               if (play(gameState.board, userInput, (y, x), direction)) {
-                found = found + 1
-                println("----> Correct! <----")
+                if (gameState.foundWords.contains(userInput)) {
+                  println(s"'$userInput' was already found!")
+                  Some(gameState.copy(numTries = newTries))
+                } else {
+                  val newFound      = gameState.numFound + 1
+                  val newFoundWords = gameState.foundWords + userInput
+                  val newState      = GameState(newTries, newFound, gameState.board, newFoundWords)
+                  println("----> Correct! <----")
+                  if (newFound == totalWords) {
+                    printGameState(newState)
+                    println(s"\n=== You found all $totalWords words in $newTries tries! ===")
+                    printGameOver()
+                    None
+                  } else {
+                    println(s"${totalWords - newFound} word(s) remaining.")
+                    Some(newState)
+                  }
+                }
               } else {
                 println("Try again!")
+                Some(gameState.copy(numTries = newTries))
               }
-            case None => println("Invalid direction")
+            case None =>
+              println("Invalid direction")
+              Some(gameState)
           }
         } catch {
-          case _: NumberFormatException => println("Invalid coordinates")
+          case _: NumberFormatException =>
+            println("Invalid coordinates")
+            Some(gameState)
         }
-        val newGameState = gameState.copy(tries, found)
-        mainLoop(newGameState, random)
+        nextState match {
+          case Some(state) => mainLoop(state, random)
+          case None        => ()
+        }
     }
   }
 
