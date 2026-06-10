@@ -145,7 +145,7 @@ object ZigZagUtils {
     val bufferedSource = Source.fromFile(file)
 
     //Extrai o conteudo
-    val content: List[String] = bufferedSource.getLines.mkString("\n").split("\n").toList
+    val content: List[String] = bufferedSource.getLines().mkString("\n").split("\n").toList
     bufferedSource.close()
 
     // Padrões regex
@@ -215,21 +215,23 @@ object ZigZagUtils {
   }
 
 
-  def printGameStateList(lst: List[GameState]): String = {
+  def printGameStateList(lst: List[GameState]): Unit = {
     lst match {
-      case Nil => ""
-      case head :: tail => printGameState(head) + printGameStateList(tail)
+      case Nil => ()
+      case head :: tail =>
+        printGameState(head)
+        printGameStateList(tail)
     }
   }
 
 
-  def getUserInput: String = readLine.trim.toUpperCase
+  def getUserInput: String = readLine().trim.toUpperCase
 
 
   def printGameOver(): Unit = println("\n=== GAME OVER ===")
 
 
-  def printNewGame(): Unit = ("\n=== NEW GAME ===")
+  def printNewGame(): Unit = println("\n=== NEW GAME ===")
 
 
   def printRules(): Unit = {
